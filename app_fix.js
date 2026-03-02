@@ -378,43 +378,35 @@ function renderResult(res){
   typeSummaryEl.textContent = `主タイプ：${res.main.name} / 副タイプ：${res.sub.name}。${res.main.summary}`;
 
   plantGridEl.innerHTML = "";
-  res.plants.forEach((p, idx)=>{
-    const div = document.createElement("div");
-    div.className = "plant";
 
+  res.plants.forEach((p, idx)=>{
     const imgHtml = p.img
       ? `<div class="plant-img-wrap">
-           <img class="plant-img" src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy">
+           <img class="plant-img" src="${p.img}" alt="${esc(p.name)}" loading="lazy">
          </div>`
       : "";
 
-  div.innerHTML = `
-  <h3>植物${idx+1}：${esc(p.name)} <span class="tag">花言葉：${esc(p.hanakotoba)}</span></h3>
-
-  <div class="plant-imgwrap">
-    <img class="plant-img"
-         src="${esc(p.img)}"
-         alt="${esc(p.name)}"
-         loading="lazy">
-  </div>
-
-  <div class="kv">
-    <div class="k">置き場所</div><div class="v">${esc(p.place)}</div>
-    <div class="k">水やり</div><div class="v">春夏：${esc(p.water.summer)} / 冬：${esc(p.water.winter)}</div>
-    <div class="k">NG（注意）</div><div class="v">${esc(p.ng)}</div>
-  </div>
-  <div class="why">
-    <div class="k">なぜ合うか</div>
-    <div class="v">${esc(p.why)}</div>
-  </div>
-`;
+    const div = document.createElement("div");
+    div.className = "plant";
+    div.innerHTML = `
+      <h3>植物${idx+1}：${esc(p.name)} <span class="tag">花言葉：${esc(p.hanakotoba)}</span></h3>
+      ${imgHtml}
+      <div class="kv">
+        <div class="k">置き場所</div><div class="v">${esc(p.place)}</div>
+        <div class="k">水やり</div><div class="v">春夏：${esc(p.water.summer)} / 冬：${esc(p.water.winter)}</div>
+        <div class="k">NG（注意）</div><div class="v">${esc(p.ng)}</div>
+      </div>
+      <div class="why">
+        <div class="k">なぜ合うか</div>
+        <div class="v">${esc(p.why)}</div>
+      </div>
+    `;
     plantGridEl.appendChild(div);
   });
 
   resultSection.hidden = false;
   resultSection.scrollIntoView({behavior:"smooth", block:"start"});
 }
-
 function esc(s){
   return String(s)
     .replaceAll("&","&amp;")
