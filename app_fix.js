@@ -1,5 +1,5 @@
-console.log("APP_VERSION: fix-IMG-001");
-document.documentElement.setAttribute("data-app-version","fix-IMG-001");
+console.log("APP_VERSION: fix-IMG-002");
+document.documentElement.setAttribute("data-app-version","fix-IMG-002");
 
 /* ===============================
    余白の一鉢｜診断ロジック（画像対応・確定版）
@@ -8,8 +8,10 @@ document.documentElement.setAttribute("data-app-version","fix-IMG-001");
    - 選択肢順：当てはまる→当てはまらない
    - 主×副で「主2 + 副1」重複回避
    - seed は回答から生成（同じ結果になりにくい）
-   - 画像：/assets/plants/plants1.jpeg〜plants20.jpeg を表示
+   - 画像：assets/plants/plants1.jpeg〜plants20.jpeg
    =============================== */
+
+const IMG_BASE = "assets/plants/";
 
 /* ---- タイプ（確定） ---- */
 const TYPES = [
@@ -44,189 +46,123 @@ const SCALE = [
   { badge:"E", label:"まったく当てはまらない", score:1 },
 ];
 
-/* ---- 植物データ：全て春夏/冬（必須） + 画像 ----
-   画像の割り当て（あなたの命名順）
-   1 サンスベリア / 2 ZZ / 3 ポトス / 4 パキラ
-   5 ドラセナ / 6 ガジュマル / 7 モンステラ / 8 シェフレラ
-   9 ウンベラータ / 10 エバーフレッシュ / 11 アイビー / 12 オリヅルラン
-   13 スパティ / 14 シンゴニウム / 15 エケベリア / 16 サボテン
-   17 ペペロミア / 18 ピレア / 19 ホヤ / 20 カラテア
-*/
+/* ---- 植物データ：全て春夏/冬（必須） + 画像 ---- */
 const PLANTS = {
-  // 1 サンスベリア
-  sanse: plant(
-    "サンスベリア（ローレンティ）","永久 / 不滅","明るい室内〜半日陰（直射NG）",
+  sanse: plant("サンスベリア（ローレンティ）","永久 / 不滅","明るい室内〜半日陰（直射NG）",
     { summer:"2〜3週間に1回（完全に乾いてから）", winter:"4〜6週間に1回（完全に乾いてから）" },
     "水のやりすぎ / 低温",
     "放置でも整う王道。余力が少ない時に失敗しにくい。",
     "plants1.jpeg"
   ),
-
-  // 2 ZZ
-  zz: plant(
-    "ザミオクルカス（ZZプランツ）","輝く未来","明るい室内〜半日陰",
+  zz: plant("ザミオクルカス（ZZプランツ）","輝く未来","明るい室内〜半日陰",
     { summer:"2〜3週間に1回（完全に乾いてから）", winter:"4〜6週間に1回（完全に乾いてから）" },
     "水やり過多（根腐れ）",
     "世話を減らしても育つ。自分を守る余白を作れる。",
     "plants2.jpeg"
   ),
-
-  // 3 ポトス
-  pothos: plant(
-    "ポトス","永遠の富 / 長い幸せ","明るい室内（レース越し推奨）",
+  pothos: plant("ポトス","永遠の富 / 長い幸せ","明るい室内（レース越し推奨）",
     { summer:"7〜10日に1回（表面が乾いたら）", winter:"10〜14日に1回（乾き気味）" },
     "直射日光 / 受け皿の水溜め",
     "悩んでも育つ安心枠。『続けられた』が回復の芯になる。",
     "plants3.jpeg"
   ),
-
-  // 4 パキラ
-  pachira: plant(
-    "パキラ","快活 / 勝利","明るい室内（直射NG）",
+  pachira: plant("パキラ","快活 / 勝利","明るい室内（直射NG）",
     { summer:"7〜10日に1回（乾いたら）", winter:"10〜14日に1回（控えめ）" },
     "水やり過多 / 寒さ",
     "ルールがある方が安心するタイプに刺さる。",
     "plants4.jpeg"
   ),
-
-  // 5 ドラセナ
-  dracaena: plant(
-    "ドラセナ（幸福の木系）","幸福","明るい室内〜半日陰",
+  dracaena: plant("ドラセナ（幸福の木系）","幸福","明るい室内〜半日陰",
     { summer:"10日に1回（乾いてから）", winter:"2〜3週間に1回（控えめ）" },
     "寒さ / 過湿",
     "部屋の柱になる安定感。刺激で散った意識を戻す。",
     "plants5.jpeg"
   ),
-
-  // 6 ガジュマル
-  gajumaru: plant(
-    "ガジュマル","健康","明るい室内（窓辺/直射は避ける）",
+  gajumaru: plant("ガジュマル","健康","明るい室内（窓辺/直射は避ける）",
     { summer:"7〜10日に1回（乾いたら）", winter:"2〜3週間に1回（控えめ）" },
     "冷え / 乾燥しすぎ",
     "“今ここ”に戻すアンカー。自分の場所を作れる。",
     "plants6.jpeg"
   ),
-
-  // 7 モンステラ
-  monstera: plant(
-    "モンステラ","うれしい便り","明るい室内（直射NG）",
+  monstera: plant("モンステラ","うれしい便り","明るい室内（直射NG）",
     { summer:"7〜10日に1回（表面が乾いたら）", winter:"10〜14日に1回（控えめ）" },
     "冷え / 直射",
     "大きい葉の余白で落ち着く。視界の休憩所。",
     "plants7.jpeg"
   ),
-
-  // 8 シェフレラ
-  schefflera: plant(
-    "シェフレラ（カポック）","実直","明るい室内",
+  schefflera: plant("シェフレラ（カポック）","実直","明るい室内",
     { summer:"7〜10日に1回（乾いたら）", winter:"10〜14日に1回（控えめ）" },
     "寒さ / 過湿",
     "丈夫で折れにくい。『ほどほどでいい』を思い出せる。",
     "plants8.jpeg"
   ),
-
-  // 9 ウンベラータ
-  umbellata: plant(
-    "フィカス・ウンベラータ","すこやか","明るい室内（直射NG）",
+  umbellata: plant("フィカス・ウンベラータ","すこやか","明るい室内（直射NG）",
     { summer:"7〜10日に1回（乾いたら）", winter:"10〜14日に1回（控えめ）" },
     "冷え / 急な移動",
     "呼吸が戻る。思考の熱を下げる。",
     "plants9.jpeg"
   ),
-
-  // 10 エバーフレッシュ
-  everfresh: plant(
-    "エバーフレッシュ","歓喜","明るい室内（直射NG）",
+  everfresh: plant("エバーフレッシュ","歓喜","明るい室内（直射NG）",
     { summer:"5〜7日に1回（やや湿り気）", winter:"10〜14日に1回（控えめ）" },
     "乾燥しすぎ / 冷え",
     "葉が閉じる動きで1日の区切りが作れる。",
     "plants10.jpeg"
   ),
-
-  // 11 アイビー
-  ivy: plant(
-    "アイビー（ヘデラ）","友情","明るい室内〜半日陰",
+  ivy: plant("アイビー（ヘデラ）","友情","明るい室内〜半日陰",
     { summer:"5〜10日に1回（乾いたら）", winter:"10〜14日に1回（控えめ）" },
     "水切れ放置 / 直射",
     "ちょい世話で満足感。手持ち無沙汰を優しく埋める。",
     "plants11.jpeg"
   ),
-
-  // 12 オリヅルラン
-  spider: plant(
-    "オリヅルラン","祝賀","明るい室内（直射NG）",
+  spider: plant("オリヅルラン","祝賀","明るい室内（直射NG）",
     { summer:"7〜10日に1回（乾いたら）", winter:"10〜14日に1回（控えめ）" },
     "冷え / 過湿",
     "丈夫で増える＝小さな成功体験が積み上がる。",
     "plants12.jpeg"
   ),
-
-  // 13 スパティ
-  spath: plant(
-    "スパティフィラム","清らかな心","明るい日陰（強光NG）",
+  spath: plant("スパティフィラム","清らかな心","明るい日陰（強光NG）",
     { summer:"5〜7日に1回（乾く前に軽く）", winter:"10〜14日に1回（控えめ）" },
     "乾燥しすぎ / 直射",
     "しおれ→水で戻る。反応が分かりやすく安心。",
     "plants13.jpeg"
   ),
-
-  // 14 シンゴニウム
-  syngonium: plant(
-    "シンゴニウム","喜び","明るい室内（直射NG）",
+  syngonium: plant("シンゴニウム","喜び","明るい室内（直射NG）",
     { summer:"7〜10日に1回（乾いたら）", winter:"10〜14日に1回（控えめ）" },
     "寒さ / 過湿",
     "観察の対象になって、考えすぎが軽くなる。",
     "plants14.jpeg"
   ),
-
-  // 15 エケベリア
-  echeveria: plant(
-    "多肉植物（エケベリア系）","優美","明るい場所（強光は慣らす）",
+  echeveria: plant("多肉植物（エケベリア系）","優美","明るい場所（強光は慣らす）",
     { summer:"2〜3週間に1回（乾いてから）", winter:"4〜6週間に1回（控えめ）" },
     "水やり過多 / 日照不足",
     "世話が少なく静けさ向き。神経の休憩に合う。",
     "plants15.jpeg"
   ),
-
-  // 16 サボテン
-  cactus: plant(
-    "サボテン（小型）","枯れない愛","明るい場所（強光は慣らす）",
+  cactus: plant("サボテン（小型）","枯れない愛","明るい場所（強光は慣らす）",
     { summer:"3〜4週間に1回（乾いてから）", winter:"6〜8週間に1回（ほぼ不要）" },
     "水やり過多 / 急な強光",
     "余白の象徴。やらなくても崩れない安心。",
     "plants16.jpeg"
   ),
-
-  // 17 ペペロミア
-  peperomia: plant(
-    "ペペロミア","可憐","明るい室内（直射NG）",
+  peperomia: plant("ペペロミア","可憐","明るい室内（直射NG）",
     { summer:"7〜10日に1回（乾いたら）", winter:"10〜14日に1回（控えめ）" },
     "冷え / 過湿",
     "小さく優しい存在。自分のための小習慣が作れる。",
     "plants17.jpeg"
   ),
-
-  // 18 ピレア
-  pilea: plant(
-    "ピレア（パンケーキプランツ）","救済","明るい室内（直射NG）",
+  pilea: plant("ピレア（パンケーキプランツ）","救済","明るい室内（直射NG）",
     { summer:"7〜10日に1回（乾いたら）", winter:"10〜14日に1回（控えめ）" },
     "寒さ / 過湿",
     "丸い葉がやさしい。罪悪感を下げて“自分OK”に寄せる。",
     "plants18.jpeg"
   ),
-
-  // 19 ホヤ
-  hoya: plant(
-    "ホヤ（カルノーサ等）","人生の幸福","明るい室内（直射NG）",
+  hoya: plant("ホヤ（カルノーサ等）","人生の幸福","明るい室内（直射NG）",
     { summer:"2〜3週間に1回（乾いてから）", winter:"4〜6週間に1回（控えめ）" },
     "過湿 / 寒さ",
     "乾かし気味でOK。頑張りすぎず続く。",
     "plants19.jpeg"
   ),
-
-  // 20 カラテア
-  calathea: plant(
-    "カラテア","飛躍","明るい日陰（直射NG）",
+  calathea: plant("カラテア","飛躍","明るい日陰（直射NG）",
     { summer:"5〜7日に1回（乾かしすぎない）", winter:"10日に1回（控えめ）" },
     "乾燥しすぎ / 冷風",
     "丁寧に扱う時間が自分への許可になる（少し難しめ）。",
@@ -234,7 +170,7 @@ const PLANTS = {
   ),
 };
 
-/* ---- タイプ別プール（増やしてOK）---- */
+/* ---- タイプ別プール ---- */
 const TYPE_POOLS = {
   depletion: ["sanse","zz","pothos","spider","cactus","echeveria","dracaena","schefflera"],
   overheat:  ["pachira","umbellata","everfresh","syngonium","spath","gajumaru","pilea","monstera"],
@@ -243,7 +179,7 @@ const TYPE_POOLS = {
 };
 
 /* ===============================
-   DOM（index.htmlのIDに合わせる）
+   DOM
    =============================== */
 const $ = (q)=>document.querySelector(q);
 const quizEl = $("#quiz");
@@ -363,7 +299,7 @@ function scrollToFirstUnanswered(){
 }
 
 /* ===============================
-   診断＆選出（seedは回答から作る）
+   診断＆選出
    =============================== */
 function diagnose(){
   const scores = Object.fromEntries(TYPES.map(t=>[t.id, 0]));
@@ -371,7 +307,7 @@ function diagnose(){
 
   answers.forEach((ans, i)=>{
     const v = ans ?? 3;
-    seed = seed * 31 + v * (i+1); // 回答ごとに変化
+    seed = seed * 31 + v * (i+1);
     const w = QUESTIONS[i].weights;
     for (const [typeId, weight] of Object.entries(w)){
       scores[typeId] += v * weight;
@@ -397,20 +333,14 @@ function pickPlants(mainId, subId, seed){
   shuffleInPlace(subPool, seed + 999);
 
   const out = [];
-
-  // 主から2つ
   for (const id of mainPool){
     if (out.length >= 2) break;
     if (!out.includes(id)) out.push(id);
   }
-
-  // 副から1つ
   for (const id of subPool){
     if (out.length >= 3) break;
     if (!out.includes(id)) out.push(id);
   }
-
-  // 足りないなら主で補充
   for (const id of mainPool){
     if (out.length >= 3) break;
     if (!out.includes(id)) out.push(id);
@@ -420,7 +350,7 @@ function pickPlants(mainId, subId, seed){
 }
 
 function shuffleInPlace(arr, seed){
-  let x = (seed | 0) || 123456789; // xorshift32
+  let x = (seed | 0) || 123456789;
   for (let i = arr.length - 1; i > 0; i--){
     x ^= x << 13; x ^= x >>> 17; x ^= x << 5;
     const j = Math.abs(x) % (i + 1);
@@ -439,9 +369,11 @@ function renderResult(res){
   plantGridEl.innerHTML = "";
 
   res.plants.forEach((p, idx)=>{
-    const imgHtml = p.img
+    const imgUrl = p.img ? (IMG_BASE + p.img) : "";
+
+    const imgHtml = imgUrl
       ? `<div class="plant-img-wrap">
-           <img class="plant-img" src="${p.img}" alt="${esc(p.name)}" loading="lazy">
+           <img class="plant-img" src="${esc(imgUrl)}" alt="${esc(p.name)}" loading="lazy">
          </div>`
       : "";
 
@@ -466,6 +398,7 @@ function renderResult(res){
   resultSection.hidden = false;
   resultSection.scrollIntoView({behavior:"smooth", block:"start"});
 }
+
 function esc(s){
   return String(s)
     .replaceAll("&","&amp;")
@@ -475,7 +408,6 @@ function esc(s){
     .replaceAll("'","&#39;");
 }
 
-/* img を追加 */
 function plant(name, hanakotoba, place, water, ng, why, img){
   return { name, hanakotoba, place, water, ng, why, img };
 }
