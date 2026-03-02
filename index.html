@@ -4,292 +4,84 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>余白の一鉢｜観葉植物診断</title>
-  <meta name="description" content="12問で、今のあなたに合う観葉植物を提案します。個人情報は不要です。" />
-  <style>
-    :root{
-      --bg1:#0b1210;
-      --bg2:#0f1d18;
-      --card:rgba(255,255,255,.10);
-      --card2:rgba(255,255,255,.08);
-      --text:rgba(255,255,255,.92);
-      --muted:rgba(255,255,255,.70);
-      --line:rgba(255,255,255,.16);
-      --accent:#a7f3d0;
-      --accent2:#60a5fa;
-      --btn:#111827;
-      --btn2:#0b0f14;
-      --shadow:0 18px 60px rgba(0,0,0,.55);
-      --radius:18px;
-      --radius2:26px;
-      --max:980px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", "Yu Gothic", sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(1200px 700px at 15% 15%, rgba(96,165,250,.18), transparent 55%),
-        radial-gradient(900px 600px at 85% 25%, rgba(167,243,208,.16), transparent 55%),
-        radial-gradient(1200px 800px at 40% 110%, rgba(34,197,94,.12), transparent 65%),
-        linear-gradient(180deg, var(--bg1), var(--bg2));
-      overflow-x:hidden;
-    }
-    /* subtle leaf pattern */
-    body:before{
-      content:"";
-      position:fixed; inset:-40px;
-      background:
-        radial-gradient(circle at 20% 30%, rgba(255,255,255,.06) 0 2px, transparent 2px 100%),
-        radial-gradient(circle at 70% 20%, rgba(255,255,255,.05) 0 2px, transparent 2px 100%),
-        radial-gradient(circle at 55% 80%, rgba(255,255,255,.04) 0 2px, transparent 2px 100%),
-        linear-gradient(120deg, rgba(255,255,255,.05), transparent 40%, rgba(255,255,255,.03));
-      filter: blur(0.2px);
-      opacity:.5;
-      pointer-events:none;
-    }
-    a{color:inherit}
-    .wrap{max-width:var(--max); margin:0 auto; padding:28px 18px 80px; position:relative}
-    header{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:14px; padding:10px 2px 18px;
-    }
-    .brand{
-      display:flex; align-items:center; gap:10px;
-      letter-spacing:.02em;
-    }
-    .dot{
-      width:12px;height:12px;border-radius:999px;
-      background: radial-gradient(circle at 30% 30%, var(--accent), rgba(167,243,208,.15));
-      box-shadow:0 0 0 6px rgba(167,243,208,.08);
-    }
-    .brand b{font-weight:700}
-    .pill{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.06);
-      padding:8px 12px;
-      border-radius:999px;
-      font-size:12px;
-      color:var(--muted);
-    }
-    .hero{
-      border:1px solid var(--line);
-      background:linear-gradient(180deg, var(--card), var(--card2));
-      border-radius:var(--radius2);
-      padding:22px 18px;
-      box-shadow:var(--shadow);
-      backdrop-filter: blur(10px);
-    }
-    .title{
-      font-size: clamp(22px, 4.6vw, 36px);
-      margin:4px 0 6px;
-      line-height:1.15;
-      letter-spacing:.02em;
-    }
-    .subtitle{
-      margin:0 0 14px;
-      color:var(--muted);
-      line-height:1.7;
-      font-size:14px;
-    }
-    .ctaRow{
-      display:flex; flex-wrap:wrap; gap:10px;
-      margin-top:10px;
-    }
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:10px;
-      padding:12px 14px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.18);
-      background: linear-gradient(180deg, rgba(17,24,39,.92), rgba(11,15,20,.92));
-      color:rgba(255,255,255,.94);
-      text-decoration:none;
-      font-weight:700;
-      letter-spacing:.02em;
-      min-height:46px;
-      flex: 1 1 180px;
-    }
-    .btn.secondary{
-      background:rgba(255,255,255,.07);
-      color:rgba(255,255,255,.88);
-      font-weight:600;
-    }
-    .btn:hover{transform: translateY(-1px);}
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:14px;
-      margin-top:14px;
-    }
-    @media (min-width: 900px){
-      .grid{grid-template-columns: 1.1fr .9fr;}
-    }
-    .card{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.06);
-      border-radius:var(--radius);
-      padding:16px 14px;
-      backdrop-filter: blur(10px);
-    }
-    .card h3{
-      margin:0 0 8px;
-      font-size:15px;
-      letter-spacing:.02em;
-    }
-    .card p{
-      margin:0;
-      color:var(--muted);
-      line-height:1.8;
-      font-size:13px;
-    }
-    .hr{
-      height:1px; background:var(--line);
-      margin:16px 0;
-    }
-    .sectionTitle{
-      margin:24px 0 10px;
-      font-size:16px;
-      color:rgba(255,255,255,.9);
-      letter-spacing:.02em;
-    }
-
-    /* embed */
-    .embedWrap{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.05);
-      border-radius:var(--radius2);
-      overflow:hidden;
-      box-shadow: 0 14px 40px rgba(0,0,0,.45);
-    }
-    .embedTop{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:10px;
-      padding:10px 12px;
-      border-bottom:1px solid var(--line);
-      background:rgba(255,255,255,.04);
-      color:var(--muted);
-      font-size:12px;
-    }
-    iframe{
-      width:100%;
-      height:780px; /* PC */
-      border:0;
-      display:block;
-      background:transparent;
-    }
-    @media (max-width: 520px){
-      iframe{height:860px;} /* スマホは長め */
-    }
-    footer{
-      margin-top:18px;
-      color:rgba(255,255,255,.45);
-      font-size:12px;
-      text-align:center;
-    }
-    code.inline{
-      background:rgba(255,255,255,.08);
-      padding:2px 6px;
-      border-radius:8px;
-      border:1px solid rgba(255,255,255,.12);
-    }
-  </style>
+  <meta name="description" content="12問で、今のあなたに合う観葉植物を提案します。主タイプ×副タイプでおすすめ3種・育て方・花言葉まで表示。" />
+  <link rel="stylesheet" href="./style.css" />
 </head>
 
 <body>
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <span class="dot" aria-hidden="true"></span>
-        <div>
-          <div style="font-size:13px; color:var(--muted);">余白の一鉢</div>
-          <b>観葉植物診断</b>
-        </div>
-      </div>
-      <div class="pill">個人情報不要 / 約2分</div>
-    </header>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="brand" href="./index.html">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span class="brand-text">
+          <span class="brand-sub">余白の一鉢</span>
+          <span class="brand-main">観葉植物診断</span>
+        </span>
+      </a>
 
-    <section class="hero" id="top">
-      <div class="title">忙しい日々に、余白を取り戻す一鉢を。</div>
-      <p class="subtitle">
-        12問で、あなたの今の状態に合う「育てやすい観葉植物」を提案します。<br>
-        気負わなくて大丈夫。植物は、急かしません。
+      <div class="header-pill">個人情報不要 / 約2分</div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1 class="hero-title">忙しい日々に、余白を取り戻す一鉢を。</h1>
+      <p class="hero-sub">
+        12問の診断で、今のあなたに合う観葉植物を提案します。<br />
+        主タイプ×副タイプから、おすすめ3種・育て方・花言葉まで表示します。
       </p>
 
-      <div class="ctaRow">
-        <a class="btn" href="#diagnosis">診断をはじめる</a>
-        <a class="btn secondary" href="#about">この診断について</a>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="./diagnosis.html">診断をはじめる</a>
+        <a class="btn btn-ghost" href="#about">この診断について</a>
       </div>
 
-      <div class="grid" id="about">
-        <div class="card">
-          <h3>📌 こんな人に向いてる</h3>
-          <p>
-            ・休み方がわからない / 気が抜けない<br>
-            ・頭が動きすぎて眠りにくい<br>
-            ・スマホを開き続けて落ち着かない<br>
-            ・自分のために時間やお金を使うのが苦手
-          </p>
-        </div>
-        <div class="card">
-          <h3>🪴 結果で出るもの</h3>
-          <p>
-            ・主タイプ / 副タイプ<br>
-            ・あなたに合う「おすすめ植物」3つ（育てやすさ重視）<br>
-            ・置き場所 / 水やり頻度の目安<br>
-            ・（あとで）有料版でタイプ別の深掘り＋季節チェックリスト
-          </p>
-        </div>
+      <div class="hero-note">
+        植物は急かしません。直感で選んで大丈夫。
       </div>
+    </section>
 
-      <div class="hr"></div>
-
-      <div class="sectionTitle" id="diagnosis">診断フォーム</div>
-      <div class="embedWrap">
-        <div class="embedTop">
-          <span>※フォームは下で動きます</span>
-          <span>うまく表示されない時は更新（F5）</span>
-        </div>
-
-        <!-- ✅ここに Tally の embed URL を入れる -->
-     <iframe
-  title="余白の一鉢｜観葉植物診断"
-  src="https://tally.so/embed/2E4JZV?hideTitle=1&transparentBackground=1"
-  loading="lazy"
-  width="100%"
-  height="900"
-  frameborder="0"
-  marginheight="0"
-  marginwidth="0"
-  allow="clipboard-write"
-></iframe>
+    <section id="about" class="grid-2">
+      <div class="card">
+        <h2 class="card-title">こんな人に向いてる</h2>
+        <ul class="list">
+          <li>休み方がわからない / 気が抜けない</li>
+          <li>考えごとが止まらず、眠りにくい</li>
+          <li>刺激が多くて落ち着かない</li>
+          <li>自分のことが後回しになりがち</li>
+        </ul>
       </div>
-
-      <div class="hr"></div>
 
       <div class="card">
-        <h3>🔧 いま大事な設定（あとで一緒にやる）</h3>
-        <p>
-          このページは「診断フォーム」だけを担当。<br>
-          診断結果（主/副タイプ×おすすめ植物）を“自動表示”にするには、次の段階で
-          <code class="inline">スコア計算</code> と <code class="inline">結果ページ生成</code> を組みます。
-          ここが本格コースの心臓部。
-        </p>
+        <h2 class="card-title">診断で出るもの</h2>
+        <ul class="list">
+          <li><b>主タイプ</b>＋<b>副タイプ</b></li>
+          <li>おすすめ植物 <b>3種</b></li>
+          <li>置き場所 / 水やり / NG</li>
+          <li>花言葉 ＋「なぜ合うか」</li>
+        </ul>
       </div>
-
-      <footer>
-        © 余白の一鉢 / made with GitHub Pages
-      </footer>
     </section>
-  </div>
 
-  <script>
-    // ちょい便利：URL末尾に #diagnosis がついてたら自動で診断位置に寄せる
-    if (location.hash === "#diagnosis") {
-      setTimeout(() => {
-        document.getElementById("diagnosis")?.scrollIntoView({behavior:"smooth"});
-      }, 250);
-    }
-  </script>
+    <section class="card">
+      <h2 class="card-title">お願い</h2>
+      <p class="text-muted">
+        これは医療・治療ではありません。いまのあなたを整えるための、やさしい目安です。<br />
+        育て方は一般的な推奨です。環境によって差が出るので、植物の様子を優先してください。
+      </p>
+    </section>
+
+    <section class="footer-actions">
+      <a class="btn btn-primary" href="./diagnosis.html">診断をはじめる</a>
+      <a class="btn btn-ghost" href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">上に戻る</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-row">
+      <span>© 余白の一鉢</span>
+      <span class="text-muted">GitHub Pages</span>
+    </div>
+  </footer>
 </body>
 </html>
