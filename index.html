@@ -4,85 +4,174 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>余白の一鉢｜観葉植物診断</title>
-  <meta name="description" content="12問で、今のあなたに合う観葉植物を提案します。主タイプ×副タイプでおすすめ3種・育て方・花言葉まで表示。" />
+  <meta name="description" content="12問で、今のあなたに合う観葉植物（主タイプ×副タイプ）を提案します。個人情報不要。" />
   <link rel="stylesheet" href="./style.css" />
 </head>
 
 <body>
   <header class="site-header">
     <div class="container header-row">
-      <a class="brand" href="./index.html">
-        <span class="brand-mark" aria-hidden="true"></span>
+      <a class="brand" href="#top">
+        <span class="brand-mark" aria-hidden="true">●</span>
         <span class="brand-text">
           <span class="brand-sub">余白の一鉢</span>
           <span class="brand-main">観葉植物診断</span>
         </span>
       </a>
-
       <div class="header-pill">個人情報不要 / 約2分</div>
     </div>
   </header>
 
-  <main class="container">
+  <main id="top">
     <section class="hero">
-      <h1 class="hero-title">忙しい日々に、余白を取り戻す一鉢を。</h1>
-      <p class="hero-sub">
-        12問の診断で、今のあなたに合う観葉植物を提案します。<br />
-        主タイプ×副タイプから、おすすめ3種・育て方・花言葉まで表示します。
-      </p>
+      <div class="container">
+        <div class="hero-card">
+          <h1>忙しい日々に、余白を取り戻す一鉢を。</h1>
+          <p class="muted">
+            12問の診断で、今のあなたに合う<strong>育てやすい観葉植物</strong>を提案します。<br />
+            主タイプ×副タイプから、おすすめ3種・育て方・花言葉まで。
+          </p>
 
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="./diagnosis.html">診断をはじめる</a>
-        <a class="btn btn-ghost" href="#about">この診断について</a>
-      </div>
+          <div class="hero-actions">
+            <button class="btn primary" id="btnStart">診断をはじめる</button>
+            <button class="btn ghost" id="btnAbout">この診断について</button>
+          </div>
 
-      <div class="hero-note">
-        植物は急かしません。直感で選んで大丈夫。
+          <div class="grid2">
+            <div class="card">
+              <h3>📌 こんな人に向いてる</h3>
+              <ul class="list">
+                <li>休み方がわからない / 気が抜けない</li>
+                <li>考えごとが止まらず眠りにくい</li>
+                <li>刺激で落ち着かない / スマホを開きがち</li>
+                <li>自分のための時間やお金に罪悪感がある</li>
+              </ul>
+            </div>
+
+            <div class="card">
+              <h3>🌿 結果で出るもの</h3>
+              <ul class="list">
+                <li><strong>主タイプ</strong> / <strong>副タイプ</strong></li>
+                <li>おすすめ植物 <strong>3種</strong>（育てやすさ重視）</li>
+                <li>置き場所 / 水やり / NG（注意点）</li>
+                <li>花言葉 ＋「なぜ合うか」</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="card note">
+            <h3>お願い</h3>
+            <p class="muted">
+              これは医療・治療ではありません。今のあなたを整えるための、やさしい目安です。<br />
+              育て方は一般的な推奨です。環境差があるので、植物の様子を優先してください。
+            </p>
+          </div>
+
+          <div class="bottom-actions">
+            <button class="btn primary" id="btnStart2">診断をはじめる</button>
+            <button class="btn ghost" id="btnTop">上に戻る</button>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section id="about" class="grid-2">
-      <div class="card">
-        <h2 class="card-title">こんな人に向いてる</h2>
-        <ul class="list">
-          <li>休み方がわからない / 気が抜けない</li>
-          <li>考えごとが止まらず、眠りにくい</li>
-          <li>刺激が多くて落ち着かない</li>
-          <li>自分のことが後回しになりがち</li>
-        </ul>
-      </div>
-
-      <div class="card">
-        <h2 class="card-title">診断で出るもの</h2>
-        <ul class="list">
-          <li><b>主タイプ</b>＋<b>副タイプ</b></li>
-          <li>おすすめ植物 <b>3種</b></li>
-          <li>置き場所 / 水やり / NG</li>
-          <li>花言葉 ＋「なぜ合うか」</li>
-        </ul>
+    <section class="section" id="about">
+      <div class="container">
+        <div class="card">
+          <h2>この診断について</h2>
+          <p class="muted">
+            質問は「今の疲れ方のクセ」を見ています。<br />
+            4つのタイプ（消耗 / 思考オーバーヒート / 刺激疲れ / 自己後回し）をスコア化し、<strong>主タイプ×副タイプ</strong>で提案を出します。
+          </p>
+          <div class="mini">
+            <div class="mini-item"><strong>主タイプ</strong>：今いちばん強い状態</div>
+            <div class="mini-item"><strong>副タイプ</strong>：次に強いクセ</div>
+            <div class="mini-item"><strong>植物3種</strong>：育てやすく、生活に馴染む王道から</div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="card">
-      <h2 class="card-title">お願い</h2>
-      <p class="text-muted">
-        これは医療・治療ではありません。いまのあなたを整えるための、やさしい目安です。<br />
-        育て方は一般的な推奨です。環境によって差が出るので、植物の様子を優先してください。
-      </p>
+    <section class="section" id="diagnosis">
+      <div class="container">
+        <div class="card">
+          <div class="section-head">
+            <h2>診断フォーム</h2>
+            <div class="small muted">※ 直感でOK。迷ったら「どちらともいえない」で。</div>
+          </div>
+
+          <div class="progress">
+            <div class="progress-bar" id="progressBar" style="width:0%"></div>
+          </div>
+          <div class="progress-text muted" id="progressText">0 / 12 answered</div>
+
+          <form id="quiz" class="quiz">
+            <!-- app.jsがここに12問を生成 -->
+          </form>
+
+          <div class="bottom-actions">
+            <button class="btn ghost" id="btnReset" type="button">回答をリセット</button>
+            <button class="btn primary" id="btnResult" type="button">結果を見る</button>
+          </div>
+
+          <p class="muted tiny" id="hint">
+            ※未回答があると結果が出ません。全12問、どれかを選択してね。
+          </p>
+        </div>
+      </div>
     </section>
 
-    <section class="footer-actions">
-      <a class="btn btn-primary" href="./diagnosis.html">診断をはじめる</a>
-      <a class="btn btn-ghost" href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">上に戻る</a>
+    <section class="section" id="result">
+      <div class="container">
+        <div class="card result-card">
+          <h2>あなたの今のタイプ</h2>
+          <p class="muted">（主タイプ×副タイプでおすすめを出します）</p>
+
+          <div class="type-row">
+            <div class="type-pill" id="primaryType">主タイプ：-</div>
+            <div class="type-pill" id="secondaryType">副タイプ：-</div>
+          </div>
+
+          <div class="why card soft" id="whyBox" style="display:none;"></div>
+
+          <h3 class="mt">おすすめの植物：3つ</h3>
+          <div class="plants" id="plants">
+            <!-- app.jsがカードを生成 -->
+          </div>
+
+          <div class="card note mt" id="careAll" style="display:none;">
+            <h3>共通の育て方（超ざっくり）</h3>
+            <ul class="list">
+              <li>置き場所：明るい室内（直射日光は避ける）</li>
+              <li>水やり：土が乾いてからたっぷり（冬は控えめ）</li>
+              <li>NG：受け皿に水を溜めっぱなし / 低温の窓際 / エアコン直風</li>
+            </ul>
+          </div>
+
+          <div class="bottom-actions">
+            <button class="btn primary" id="btnToPaid" type="button">有料版で深掘り（準備中）</button>
+            <button class="btn ghost" id="btnBackTop" type="button">TOPへ戻る</button>
+          </div>
+
+          <p class="muted tiny">
+            ※有料版は後で追加できる（今はボタンだけ）。<br />
+            今は無料で「主/副＋おすすめ3種＋育て方＋花言葉＋理由」まで出る。
+          </p>
+        </div>
+      </div>
     </section>
+
   </main>
 
   <footer class="site-footer">
     <div class="container footer-row">
-      <span>© 余白の一鉢</span>
-      <span class="text-muted">GitHub Pages</span>
+      <div class="muted tiny">© 余白の一鉢</div>
+      <div class="muted tiny">GitHub Pages</div>
     </div>
   </footer>
+
   <script src="./app.js"></script>
+</body>
+</html>
 </body>
 </html>
