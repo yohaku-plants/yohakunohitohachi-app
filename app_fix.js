@@ -1,3 +1,5 @@
+console.log("APP_VERSION: fix-999");
+document.documentElement.setAttribute("data-app-version","fix-999");
 /* ===============================
    余白の一鉢｜診断ロジック（やり直し確定版）
    修正点：
