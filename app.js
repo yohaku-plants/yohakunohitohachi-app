@@ -1,395 +1,297 @@
-/* =========================
-   余白の一鉢｜診断ロジック
-   4タイプ：
-   - 消耗タイプ
-   - 思考オーバーヒートタイプ
-   - 刺激疲れタイプ
-   - 自己後回しタイプ
-   ========================= */
+// ===============================
+// 余白の一鉢｜診断ロジック（GitHub完結）
+// ===============================
 
+// ---- タイプ（本格寄り名称：共感されやすい）----
 const TYPES = [
-  { key: "depletion", name: "消耗タイプ", emoji: "🌿" },
-  { key: "overheat", name: "思考オーバーヒートタイプ", emoji: "🌿" },
-  { key: "stim", name: "刺激疲れタイプ", emoji: "🌿" },
-  { key: "selfless", name: "自己後回しタイプ", emoji: "🌿" },
+  { id: "depletion", name: "余力枯渇タイプ", summary: "頑張り続けて、回復の入口を見失いがち。まずは“休める仕組み”が必要。" },
+  { id: "overheat",  name: "思考過熱タイプ", summary: "考えが止まらず、頭の温度が上がり続ける。静けさを作れる環境が鍵。" },
+  { id: "overstim",  name: "刺激過多タイプ", summary: "刺激を浴びすぎて、落ち着く場所が消えがち。情報量を下げる工夫が必要。" },
+  { id: "selfsup",   name: "自己抑制タイプ", summary: "自分の優先度が低くなりがち。自分のための“許可”を増やすのが近道。" },
 ];
 
+// ---- 12問：どのタイプに効く質問か（重み）----
+// ※ ここは後でいくらでも微調整できる。今は動く“確定版”で作る。
 const QUESTIONS = [
-  // 1-3: 消耗
-  "朝起きたとき、すでに疲れを感じている。",
-  "休みの日でも、どこか気が抜けない。",
-  "（少し刺す）「まだ頑張れる」と自分に言い聞かせてしまう。",
-
-  // 4-6: 思考オーバーヒート
-  "考えごとが止まらず、眠りにくい。",
-  "物事を決めるとき、最適解を探しすぎてしまう。",
-  "（少し刺す）失敗しないために、先回りして考えすぎてしまう。",
-
-  // 7-9: 刺激疲れ
-  "気づくとスマホを何度も開いている。",
-  "何もしていない時間に、落ち着かない。",
-  "（少し刺す）静かな時間より、刺激のある時間を選びがちだ。",
-
-  // 10-12: 自己後回し
-  "自分よりも人の予定を優先することが多い。",
-  "頼まれると断るのが苦手だ。",
-  "（少し刺す）自分のために時間やお金を使うことに罪悪感がある。",
+  { text:"朝起きたとき、すでに疲れを感じている。", weights:{ depletion:2, overheat:1 } },
+  { text:"休みの日でも、どこか気が抜けない。",       weights:{ depletion:1, overheat:2 } },
+  { text:"「まだ頑張れる」と自分に言い聞かせてしまう。", weights:{ depletion:2, selfsup:1 } },
+  { text:"考えごとが止まらず、眠りにくい。",           weights:{ overheat:2 } },
+  { text:"物事を決めるとき、最適解を探しすぎてしまう。", weights:{ overheat:2 } },
+  { text:"失敗しないために、先回りして考えすぎてしまう。", weights:{ overheat:2, selfsup:1 } },
+  { text:"気づくとスマホを何度も開いている。",           weights:{ overstim:2 } },
+  { text:"何もしていない時間に、落ち着かない。",         weights:{ overstim:2, overheat:1 } },
+  { text:"静かな時間より、刺激のある時間を選びがちだ。",   weights:{ overstim:2 } },
+  { text:"自分よりも人の予定を優先することが多い。",       weights:{ selfsup:2 } },
+  { text:"頼まれると断るのが苦手だ。",                     weights:{ selfsup:2 } },
+  { text:"自分のために時間やお金を使うことに罪悪感がある。", weights:{ selfsup:2, depletion:1 } },
 ];
 
+// ---- 選択肢（順番は“当てはまる→当てはまらない”）----
 const SCALE = [
-  { label: "まったく当てはまらない", value: 0, badge: "A" },
-  { label: "あまり当てはまらない", value: 1, badge: "B" },
-  { label: "どちらともいえない", value: 2, badge: "C" },
-  { label: "やや当てはまる", value: 3, badge: "D" },
-  { label: "とても当てはまる", value: 4, badge: "E" },
+  { badge:"A", label:"とても当てはまる", score:5 },
+  { badge:"B", label:"やや当てはまる",   score:4 },
+  { badge:"C", label:"どちらともいえない", score:3 },
+  { badge:"D", label:"あまり当てはまらない", score:2 },
+  { badge:"E", label:"まったく当てはまらない", score:1 },
 ];
 
-// タイプごとの「王道・育てやすい」植物ベース（ここが核）
-const TYPE_PLANTS = {
-  depletion: [
-    plant("サンスベリア", "控えめな世話でOK。疲れてても枯らしにくい。", "自己管理が苦手な時の救世主。", "永久", "明るい室内〜半日陰", "春夏2〜3週 / 冬は月1", "水のやりすぎ・低温"),
-    plant("ポトス", "とにかく強い。気持ちが落ちてても育つ。", "『回復のスイッチ』になりやすい。", "永遠の富", "明るい室内（直射×）", "土が乾いたら / 冬は控えめ", "冷え・水切れ放置"),
-    plant("ドラセナ（幸福の木）", "見た目が元気をくれる。管理も簡単。", "部屋の雰囲気を整える。", "幸福", "明るい室内", "土が乾いたら", "寒さ・根腐れ"),
-  ],
-  overheat: [
-    plant("パキラ", "シンプルな世話で“思考の熱”を下げる。", "ルールがある方が安心するタイプ向け。", "快活", "明るい室内", "土が乾いたら", "水やり過多"),
-    plant("ガジュマル", "幹の存在感で“今ここ”に戻す。", "考えすぎを止める物体アンカー。", "健康", "明るい室内", "春夏は乾いたら / 冬は控えめ", "冷え・乾燥しすぎ"),
-    plant("フィカス・ウンベラータ", "葉が大きく、呼吸がゆっくりになる。", "視界に『余白』を作る。", "すこやか", "明るい室内（直射×）", "表面が乾いたら", "乾燥・葉焼け"),
-  ],
-  stim: [
-    plant("モンステラ", "刺激が多い日でも、強く育つ。", "『大きい葉』が気持ちを落ち着かせる。", "壮大な計画", "明るい室内", "表面が乾いたら", "冷え・過湿"),
-    plant("スパティフィラム", "しおれ→水で復活が分かりやすい。", "『整った反応』が安心になる。", "清らかな心", "明るい日陰", "土が乾く前に軽く", "乾燥・強光"),
-    plant("アイビー（ヘデラ）", "成長が見える。気が散っても続けやすい。", "“ちょい世話”で満足感。", "友情", "明るい室内", "乾いたら", "水切れ放置"),
-  ],
-  selfless: [
-    plant("ZZプランツ（ザミオクルカス）", "放置OK。自分のために時間を取りやすい。", "頑張りすぎのブレーキ役。", "輝く未来", "明るい室内〜半日陰", "月1〜2回", "水やり過多"),
-    plant("シェフレラ（カポック）", "丈夫で育てやすい。『ほどほど』が叶う。", "他人優先の癖をゆるめる。", "実直", "明るい室内", "乾いたら", "寒さ"),
-    plant("アグラオネマ", "落ち着いた葉。気疲れを緩和する見た目。", "“静かな安心”を部屋に置く。", "青春", "明るい日陰", "乾いたら", "低温"),
-  ],
+// ---- 植物データ（育てやすい王道／季節水やりはあれば表示、無ければ通年表示）----
+const PLANTS = {
+  sanse: {
+    name:"サンスベリア（ローレンティ）",
+    hanakotoba:"永久 / 不滅",
+    place:"明るい室内（直射は避ける）",
+    water:{ summer:"2〜3週に1回", winter:"月1回" },
+    ng:"水やり過多 / 寒すぎ",
+    why:"“放っておいても整う”代表。回復の入口を作る相棒。"
+  },
+  zz: {
+    name:"ZZプランツ（ザミオクルカス）",
+    hanakotoba:"輝く未来",
+    place:"明るい室内〜半日陰",
+    water:{ common:"月1〜2回（乾いてから）" },
+    ng:"水やり過多",
+    why:"頑張りすぎのブレーキ役。やる気を削らずに余白を作れる。"
+  },
+  pothos: {
+    name:"ポトス",
+    hanakotoba:"永遠の富 / 長い幸せ",
+    place:"明るい室内（レース越し推奨）",
+    water:{ summer:"週1", winter:"10〜14日に1回" },
+    ng:"直射日光 / 受け皿に水",
+    why:"“悩んでも育つ”安心枠。考えすぎの緊張をほどく。"
+  },
+  ficus: {
+    name:"フィカス・ウンベラータ",
+    hanakotoba:"すこやか",
+    place:"明るい室内（直射NG）",
+    water:{ summer:"週1", winter:"10〜14日に1回" },
+    ng:"寒さ / 急な環境変化",
+    why:"呼吸を整えるシンボル。自分を大事にするスイッチになる。"
+  },
+  dracaena: {
+    name:"ドラセナ（幸福の木）",
+    hanakotoba:"幸福",
+    place:"明るい室内〜半日陰",
+    water:{ common:"土が乾いてから（冬は控えめ）" },
+    ng:"冷え / 過湿",
+    why:"“安定”をくれる柱。刺激過多で散る意識を戻す。"
+  },
+  monstera: {
+    name:"モンステラ",
+    hanakotoba:"うれしい便り",
+    place:"明るい室内（直射NG）",
+    water:{ summer:"週1", winter:"10〜14日に1回" },
+    ng:"乾燥しすぎ / 冷風",
+    why:"余白のある存在感。焦りを落ち着かせる“部屋のアンカー”。"
+  }
 };
 
-// 主×副 で「3つ」を作るルール：
-// - 主タイプの上位2つ + 副タイプの上位1つ（重複は飛ばして補充）
-function pickPlants(primaryKey, secondaryKey) {
-  const p = TYPE_PLANTS[primaryKey] || [];
-  const s = TYPE_PLANTS[secondaryKey] || [];
-  const pool = [...p, ...s, ...p, ...s]; // 重複補充用
-  const picked = [];
+// ---- 主×副のおすすめ3種（必要なら後でいくらでも差し替え）----
+const COMBO_PLANTS = {
+  "depletion|overheat": ["sanse","pothos","zz"],
+  "depletion|overstim": ["sanse","dracaena","zz"],
+  "depletion|selfsup":  ["zz","ficus","sanse"],
+  "overheat|depletion": ["pothos","sanse","monstera"],
+  "overheat|overstim":  ["pothos","monstera","dracaena"],
+  "overheat|selfsup":   ["pothos","ficus","zz"],
+  "overstim|depletion": ["dracaena","sanse","zz"],
+  "overstim|overheat":  ["monstera","pothos","dracaena"],
+  "overstim|selfsup":   ["dracaena","ficus","zz"],
+  "selfsup|depletion":  ["ficus","zz","sanse"],
+  "selfsup|overheat":   ["ficus","pothos","zz"],
+  "selfsup|overstim":   ["ficus","dracaena","zz"],
+};
 
-  const want = [
-    p[0], p[1], s[0],
-    p[2], s[1], s[2],
-  ].filter(Boolean);
+// =============== DOM ===============
+const $ = (q)=>document.querySelector(q);
 
-  for (const item of want) {
-    if (!picked.find(x => x.name === item.name)) picked.push(item);
-    if (picked.length >= 3) break;
-  }
-  // 足りない場合はpoolから埋める
-  for (const item of pool) {
-    if (picked.length >= 3) break;
-    if (!picked.find(x => x.name === item.name)) picked.push(item);
-  }
-  return picked.slice(0, 3);
-}
+const quizEl = $("#quiz");
+const answeredCountEl = $("#answeredCount");
+const progressFillEl = $("#progressFill");
 
-function plant(name, reason, why, hanakotoba, place, water, ng) {
-  return { name, reason, why, hanakotoba, place, water, ng, img: "" };
-}
+const aboutBox = $("#aboutBox");
+const btnAbout = $("#btnAbout");
+const btnStart = $("#btnStart");
+const btnStart2 = $("#btnStart2");
+const btnToForm = $("#btnToForm");
+const btnReset = $("#btnReset");
+const btnResult = $("#btnResult");
 
-// 画面要素
-const quizEl = document.getElementById("quiz");
-const btnResult = document.getElementById("btnResult");
-const btnReset = document.getElementById("btnReset");
-const progressBar = document.getElementById("progressBar");
-const progressText = document.getElementById("progressText");
-const hint = document.getElementById("hint");
+const resultSection = $("#result");
+const mainTypeEl = $("#mainType");
+const subTypeEl = $("#subType");
+const typeSummaryEl = $("#typeSummary");
+const plantGridEl = $("#plantGrid");
+const btnBack = $("#btnBack");
+const btnTop = $("#btnTop");
 
-const primaryTypeEl = document.getElementById("primaryType");
-const secondaryTypeEl = document.getElementById("secondaryType");
-const plantsEl = document.getElementById("plants");
-const whyBox = document.getElementById("whyBox");
-const careAll = document.getElementById("careAll");
+// =============== Render Questions ===============
+let answers = Array(QUESTIONS.length).fill(null);
 
-const btnStart = document.getElementById("btnStart");
-const btnStart2 = document.getElementById("btnStart2");
-const btnAbout = document.getElementById("btnAbout");
-const btnTop = document.getElementById("btnTop");
-const btnBackTop = document.getElementById("btnBackTop");
-const btnToPaid = document.getElementById("btnToPaid");
-
-btnStart?.addEventListener("click", () => scrollToId("diagnosis"));
-btnStart2?.addEventListener("click", () => scrollToId("diagnosis"));
-btnAbout?.addEventListener("click", () => scrollToId("about"));
-btnTop?.addEventListener("click", () => scrollToId("top"));
-btnBackTop?.addEventListener("click", () => scrollToId("top"));
-btnToPaid?.addEventListener("click", () => alert("有料版は準備中（後で追加OK）"));
-
-// 初期化
-renderQuestions();
-restoreAnswers();
-updateProgress();
-
-btnReset.addEventListener("click", () => {
-  localStorage.removeItem("yohaku_answers");
-  localStorage.removeItem("yohaku_result");
-  // 全ラジオ解除
-  document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
-  plantsEl.innerHTML = "";
-  primaryTypeEl.textContent = "主タイプ：-";
-  secondaryTypeEl.textContent = "副タイプ：-";
-  whyBox.style.display = "none";
-  careAll.style.display = "none";
-  hint.textContent = "※未回答があると結果が出ません。全12問、どれかを選択してね。";
-  updateProgress();
-  scrollToId("diagnosis");
-});
-
-btnResult.addEventListener("click", () => {
-  const answers = collectAnswers();
-  const answeredCount = Object.keys(answers).length;
-
-  if (answeredCount < QUESTIONS.length) {
-    hint.textContent = `⚠️ 未回答が ${QUESTIONS.length - answeredCount} 個ある。全部答えてから結果が出るよ。`;
-    hint.style.color = "#8a2b2b";
-    scrollToFirstUnanswered(answers);
-    return;
-  }
-
-  hint.style.color = "";
-  hint.textContent = "OK。結果を作成中…";
-
-  const result = diagnose(answers);
-  localStorage.setItem("yohaku_answers", JSON.stringify(answers));
-  localStorage.setItem("yohaku_result", JSON.stringify(result));
-
-  renderResult(result);
-  scrollToId("result");
-});
-
-function renderQuestions() {
+function render(){
   quizEl.innerHTML = "";
-  QUESTIONS.forEach((q, i) => {
+
+  QUESTIONS.forEach((q, idx)=>{
     const wrap = document.createElement("div");
     wrap.className = "q";
-    wrap.dataset.q = String(i);
 
     const title = document.createElement("div");
     title.className = "q-title";
-    title.textContent = `${i + 1}) ${q}`;
+    title.textContent = `${idx+1}) ${q.text}`;
     wrap.appendChild(title);
 
     const opts = document.createElement("div");
     opts.className = "options";
 
-    SCALE.forEach(s => {
+    SCALE.forEach((opt)=>{
       const label = document.createElement("label");
-      label.className = "opt";
+      label.className = "option";
 
-      const radio = document.createElement("input");
-      radio.type = "radio";
-      radio.name = `q${i}`;
-      radio.value = String(s.value);
-      radio.addEventListener("change", () => {
-        saveAnswers();
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = `q${idx}`;
+      input.value = String(opt.score);
+      input.checked = answers[idx] === opt.score;
+
+      input.addEventListener("change", ()=>{
+        answers[idx] = opt.score;
         updateProgress();
       });
 
-      const badge = document.createElement("span");
+      const badge = document.createElement("div");
       badge.className = "badge";
-      badge.textContent = s.badge;
+      badge.textContent = opt.badge;
 
-      const txt = document.createElement("span");
-      txt.textContent = s.label;
+      const text = document.createElement("div");
+      text.textContent = opt.label;
 
-      label.appendChild(radio);
+      label.appendChild(input);
       label.appendChild(badge);
-      label.appendChild(txt);
+      label.appendChild(text);
+
       opts.appendChild(label);
     });
 
     wrap.appendChild(opts);
     quizEl.appendChild(wrap);
   });
+
+  updateProgress();
 }
 
-function collectAnswers() {
-  const answers = {};
-  for (let i = 0; i < QUESTIONS.length; i++) {
-    const chosen = document.querySelector(`input[name="q${i}"]:checked`);
-    if (chosen) answers[i] = Number(chosen.value);
-  }
-  return answers;
-}
-
-function saveAnswers() {
-  const answers = collectAnswers();
-  localStorage.setItem("yohaku_answers", JSON.stringify(answers));
-}
-
-function restoreAnswers() {
-  const raw = localStorage.getItem("yohaku_answers");
-  if (!raw) return;
-  try {
-    const answers = JSON.parse(raw);
-    Object.keys(answers).forEach(k => {
-      const i = Number(k);
-      const v = String(answers[k]);
-      const r = document.querySelector(`input[name="q${i}"][value="${v}"]`);
-      if (r) r.checked = true;
-    });
-  } catch {}
-  const resRaw = localStorage.getItem("yohaku_result");
-  if (resRaw) {
-    try {
-      const result = JSON.parse(resRaw);
-      renderResult(result);
-    } catch {}
-  }
-}
-
-function updateProgress() {
-  const answers = collectAnswers();
-  const answered = Object.keys(answers).length;
+function updateProgress(){
+  const answered = answers.filter(v=>v!==null).length;
+  answeredCountEl.textContent = String(answered);
   const pct = Math.round((answered / QUESTIONS.length) * 100);
-  progressBar.style.width = `${pct}%`;
-  progressText.textContent = `${answered} / ${QUESTIONS.length} answered`;
+  progressFillEl.style.width = `${pct}%`;
+
+  btnResult.disabled = answered !== QUESTIONS.length;
 }
 
-function scrollToId(id) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.scrollIntoView({ behavior: "smooth", block: "start" });
-}
+// =============== Score & Result ===============
+function calcTypes(){
+  const scoreMap = Object.fromEntries(TYPES.map(t=>[t.id, 0]));
 
-function scrollToFirstUnanswered(answers) {
-  for (let i = 0; i < QUESTIONS.length; i++) {
-    if (answers[i] == null) {
-      const block = document.querySelector(`.q[data-q="${i}"]`);
-      if (block) block.scrollIntoView({ behavior: "smooth", block: "center" });
-      break;
+  answers.forEach((ans, i)=>{
+    const q = QUESTIONS[i];
+    const value = ans ?? 3; // safety
+    for(const [typeId, w] of Object.entries(q.weights)){
+      scoreMap[typeId] += (value * w);
     }
-  }
-}
-
-function diagnose(answers) {
-  // 4タイプのスコア計算（各3問）
-  const scores = {
-    depletion: sum(answers, [0,1,2]),
-    overheat: sum(answers, [3,4,5]),
-    stim: sum(answers, [6,7,8]),
-    selfless: sum(answers, [9,10,11]),
-  };
-
-  // 順位付け
-  const ranked = Object.entries(scores)
-    .map(([k, v]) => ({ key: k, score: v }))
-    .sort((a,b) => b.score - a.score);
-
-  const primary = ranked[0];
-  const secondary = ranked[1];
-
-  const primaryName = TYPES.find(t => t.key === primary.key)?.name || primary.key;
-  const secondaryName = TYPES.find(t => t.key === secondary.key)?.name || secondary.key;
-
-  const plants = pickPlants(primary.key, secondary.key);
-
-  const why = buildWhy(primary.key, secondary.key, scores);
-
-  return {
-    scores,
-    primary: { key: primary.key, name: primaryName, score: primary.score },
-    secondary: { key: secondary.key, name: secondaryName, score: secondary.score },
-    plants,
-    why,
-  };
-}
-
-function sum(ans, idxs) {
-  return idxs.reduce((acc, i) => acc + (ans[i] ?? 0), 0);
-}
-
-function buildWhy(pKey, sKey, scores) {
-  const name = (k) => TYPES.find(t => t.key === k)?.name ?? k;
-  const p = name(pKey);
-  const s = name(sKey);
-
-  // “共感が取れる”説明（本格っぽい言い回し）
-  const map = {
-    depletion: "エネルギー残量が少なく、回復より先に『維持』に力が割かれがち。",
-    overheat: "頭の中の処理が止まらず、休む時間も“思考”が動いてしまいがち。",
-    stim: "刺激の多さで神経が疲れやすく、静けさが逆に落ち着かない時がある。",
-    selfless: "他人優先が染みついていて、自分のケアが後回しになりがち。",
-  };
-
-  const line1 = `主タイプは「${p}」。${map[pKey] || ""}`;
-  const line2 = `副タイプは「${s}」。${map[sKey] || ""}`;
-  const line3 = `提案する植物は「育てやすさ」と「生活に馴染む安心感」を最優先に選んでいます。`;
-
-  // スコア見せ（本格感）
-  const scoreLine = `（スコア：消耗${scores.depletion} / 思考${scores.overheat} / 刺激${scores.stim} / 自己後回し${scores.selfless}）`;
-
-  return [line1, line2, line3, scoreLine];
-}
-
-function renderResult(result) {
-  primaryTypeEl.textContent = `主タイプ：${result.primary.name}`;
-  secondaryTypeEl.textContent = `副タイプ：${result.secondary.name}`;
-
-  whyBox.style.display = "block";
-  whyBox.innerHTML = `
-    <h3>なぜこの結果？</h3>
-    <p class="muted" style="margin:8px 0 0;">
-      ${escapeHtml(result.why[0])}<br/>
-      ${escapeHtml(result.why[1])}<br/>
-      ${escapeHtml(result.why[2])}<br/>
-      <span class="tiny">${escapeHtml(result.why[3])}</span>
-    </p>
-  `;
-
-  plantsEl.innerHTML = "";
-  result.plants.forEach((p, i) => {
-    const el = document.createElement("div");
-    el.className = "card plant";
-    el.innerHTML = `
-      <div class="plant-head">
-        <div>
-          <div class="plant-name">植物${i+1}：${escapeHtml(p.name)}</div>
-          <div class="muted small">${escapeHtml(p.reason)}</div>
-        </div>
-        <div class="tag">花言葉：${escapeHtml(p.hanakotoba)}</div>
-      </div>
-
-      <div class="plant-grid">
-        <div class="kv">
-          <b>置き場所</b>
-          <div class="muted">${escapeHtml(p.place)}</div>
-        </div>
-        <div class="kv">
-          <b>水やり</b>
-          <div class="muted">${escapeHtml(p.water)}</div>
-        </div>
-        <div class="kv">
-          <b>NG（注意）</b>
-          <div class="muted">${escapeHtml(p.ng)}</div>
-        </div>
-        <div class="kv">
-          <b>なぜ合うか</b>
-          <div class="muted">${escapeHtml(p.why)}</div>
-        </div>
-      </div>
-    `;
-    plantsEl.appendChild(el);
   });
 
-  careAll.style.display = "block";
+  const sorted = [...TYPES].sort((a,b)=>scoreMap[b.id]-scoreMap[a.id]);
+  const main = sorted[0];
+  const sub = sorted[1];
+
+  return { scoreMap, main, sub };
 }
 
-function escapeHtml(s) {
-  return String(s)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
+function pickPlants(mainId, subId){
+  const key = `${mainId}|${subId}`;
+  const list = COMBO_PLANTS[key] || ["sanse","pothos","zz"];
+  return list.map(k=>PLANTS[k]).filter(Boolean).slice(0,3);
 }
+
+function waterText(w){
+  if(!w) return "土が乾いてからたっぷり（冬は控えめ）";
+  if(w.summer || w.winter){
+    const a = w.summer ? `春夏：${w.summer}` : "";
+    const b = w.winter ? `冬：${w.winter}` : "";
+    return [a,b].filter(Boolean).join(" / ");
+  }
+  if(w.common) return w.common;
+  return "土が乾いてからたっぷり（冬は控えめ）";
+}
+
+function showResult(){
+  const { main, sub } = calcTypes();
+
+  mainTypeEl.textContent = main.name;
+  subTypeEl.textContent = sub.name;
+
+  typeSummaryEl.textContent = `主タイプ：${main.name} / 副タイプ：${sub.name}。${main.summary}`;
+
+  const plants = pickPlants(main.id, sub.id);
+  plantGridEl.innerHTML = "";
+
+  plants.forEach((p, idx)=>{
+    const card = document.createElement("div");
+    card.className = "plant";
+
+    card.innerHTML = `
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+        <h3>植物${idx+1}：${p.name} <span class="tag">花言葉：${p.hanakotoba}</span></h3>
+      </div>
+
+      <div class="kv">
+        <div class="k">置き場所</div><div class="v">${p.place}</div>
+        <div class="k">水やり</div><div class="v">${waterText(p.water)}</div>
+        <div class="k">NG（注意）</div><div class="v">${p.ng}</div>
+      </div>
+
+      <div class="why">
+        <div class="k">なぜ合うか</div>
+        <div class="v">${p.why}</div>
+      </div>
+    `;
+    plantGridEl.appendChild(card);
+  });
+
+  resultSection.hidden = false;
+  resultSection.scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+// =============== Events ===============
+btnAbout.addEventListener("click", ()=>{
+  aboutBox.hidden = !aboutBox.hidden;
+});
+
+function goToForm(){
+  document.querySelector("#diagnosis").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+btnStart.addEventListener("click", goToForm);
+btnStart2.addEventListener("click", goToForm);
+btnToForm.addEventListener("click", goToForm);
+
+btnReset.addEventListener("click", ()=>{
+  answers = Array(QUESTIONS.length).fill(null);
+  render();
+  resultSection.hidden = true;
+});
+
+btnResult.addEventListener("click", showResult);
+
+btnBack.addEventListener("click", ()=>{
+  document.querySelector("#diagnosis").scrollIntoView({behavior:"smooth", block:"start"});
+});
+
+btnTop.addEventListener("click", ()=>{
+  document.querySelector("#top").scrollIntoView({behavior:"smooth", block:"start"});
+});
+
+// init
+render();
