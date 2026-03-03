@@ -391,9 +391,5 @@ function esc(s){
 }
 
 function plant(name, hanakotoba, place, water, ng, why, img){
-  const IMG_BASE = "./assets/plants/";  // ここ重要（フォルダ場所）
-  return {
-    name, hanakotoba, place, water, ng, why,
-    img: img ? (IMG_BASE + img) : ""
-  };
+  return { name, hanakotoba, place, water, ng, why, img };
 }
