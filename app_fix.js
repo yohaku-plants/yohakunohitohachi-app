@@ -1,21 +1,5 @@
-// === DEBUG: これが画面に出れば、JSは確実に動いてる ===
-window.addEventListener("load", () => {
-  const box = document.createElement("div");
-  box.style.cssText = "position:fixed;left:10px;bottom:10px;z-index:99999;background:#fff;border:2px solid #000;padding:8px;font-weight:900;";
-  box.textContent = "JS OK ✅ (DEBUG BOX)";
-  document.body.appendChild(box);
-
-  // === DEBUG: 画像URLが正しいかを強制で1枚だけ表示 ===
-  const img = document.createElement("img");
-  img.src = "./plants1.jpeg"; // ←ここが表示されればパスはOK
-  img.alt = "debug plants1";
-  img.style.cssText = "position:fixed;left:10px;top:10px;z-index:99999;width:120px;height:auto;border:2px solid red;background:#fff;";
-  img.onerror = () => { box.textContent = "JS OK ✅ / IMG NG ❌ (./plants1.jpeg)"; };
-  img.onload  = () => { box.textContent = "JS OK ✅ / IMG OK ✅"; };
-  document.body.appendChild(img);
-});
-console.log("APP_VERSION: fix-IMG-002");
-document.documentElement.setAttribute("data-app-version","fix-IMG-002");
+console.log("APP_VERSION: img003");
+document.documentElement.setAttribute("data-app-version", "img003");
 
 /* ===============================
    余白の一鉢｜診断ロジック（画像対応・確定版）
@@ -24,13 +8,8 @@ document.documentElement.setAttribute("data-app-version","fix-IMG-002");
    - 選択肢順：当てはまる→当てはまらない
    - 主×副で「主2 + 副1」重複回避
    - seed は回答から生成（同じ結果になりにくい）
-   - 画像：assets/plants/plants1.jpeg〜plants20.jpeg
-   ※ GitHub Pages 対策：先頭「/」は使わず “相対URL” を組み立てる
+   - 画像：./assets/plants/plants1.jpeg〜plants20.jpeg を表示
    =============================== */
-
-/* ---- URLユーティリティ（GitHub Pagesのサブパスでも壊れない） ---- */
-const SITE_DIR = new URL(".", window.location.href); // index.html のあるディレクトリ
-const assetUrl = (relPath) => new URL(relPath, SITE_DIR).toString();
 
 /* ---- タイプ（確定） ---- */
 const TYPES = [
@@ -65,107 +44,97 @@ const SCALE = [
   { badge:"E", label:"まったく当てはまらない", score:1 },
 ];
 
-/* ---- 植物データ：全て春夏/冬（必須） + 画像 ---- */
+/* ---- 画像パス（確定） ---- */
+const IMG = (n) => `./assets/plants/plants${n}.jpeg`;
+
+/* ---- 植物データ：全て春夏/冬（必須） + 画像 ----
+   画像の割り当て（命名順）
+   1 サンスベリア / 2 ZZ / 3 ポトス / 4 パキラ
+   5 ドラセナ / 6 ガジュマル / 7 モンステラ / 8 シェフレラ
+   9 ウンベラータ / 10 エバーフレッシュ / 11 アイビー / 12 オリヅルラン
+   13 スパティ / 14 シンゴニウム / 15 エケベリア / 16 サボテン
+   17 ペペロミア / 18 ピレア / 19 ホヤ / 20 カラテア
+*/
 const PLANTS = {
   sanse: plant("サンスベリア（ローレンティ）","永久 / 不滅","明るい室内〜半日陰（直射NG）",
     { summer:"2〜3週間に1回（完全に乾いてから）", winter:"4〜6週間に1回（完全に乾いてから）" },
-    "水のやりすぎ / 低温","放置でも整う王道。余力が少ない時に失敗しにくい。",
-    assetUrl("assets/plants/plants1.jpeg")
+    "水のやりすぎ / 低温","放置でも整う王道。余力が少ない時に失敗しにくい。", IMG(1)
   ),
   zz: plant("ザミオクルカス（ZZプランツ）","輝く未来","明るい室内〜半日陰",
     { summer:"2〜3週間に1回（完全に乾いてから）", winter:"4〜6週間に1回（完全に乾いてから）" },
-    "水やり過多（根腐れ）","世話を減らしても育つ。自分を守る余白を作れる。",
-    assetUrl("assets/plants/plants2.jpeg")
+    "水やり過多（根腐れ）","世話を減らしても育つ。自分を守る余白を作れる。", IMG(2)
   ),
   pothos: plant("ポトス","永遠の富 / 長い幸せ","明るい室内（レース越し推奨）",
     { summer:"7〜10日に1回（表面が乾いたら）", winter:"10〜14日に1回（乾き気味）" },
-    "直射日光 / 受け皿の水溜め","悩んでも育つ安心枠。『続けられた』が回復の芯になる。",
-    assetUrl("assets/plants/plants3.jpeg")
+    "直射日光 / 受け皿の水溜め","悩んでも育つ安心枠。『続けられた』が回復の芯になる。", IMG(3)
   ),
   pachira: plant("パキラ","快活 / 勝利","明るい室内（直射NG）",
     { summer:"7〜10日に1回（乾いたら）", winter:"10〜14日に1回（控えめ）" },
-    "水やり過多 / 寒さ","ルールがある方が安心するタイプに刺さる。",
-    assetUrl("assets/plants/plants4.jpeg")
+    "水やり過多 / 寒さ","ルールがある方が安心するタイプに刺さる。", IMG(4)
   ),
   dracaena: plant("ドラセナ（幸福の木系）","幸福","明るい室内〜半日陰",
     { summer:"10日に1回（乾いてから）", winter:"2〜3週間に1回（控えめ）" },
-    "寒さ / 過湿","部屋の柱になる安定感。刺激で散った意識を戻す。",
-    assetUrl("assets/plants/plants5.jpeg")
+    "寒さ / 過湿","部屋の柱になる安定感。刺激で散った意識を戻す。", IMG(5)
   ),
   gajumaru: plant("ガジュマル","健康","明るい室内（窓辺/直射は避ける）",
     { summer:"7〜10日に1回（乾いたら）", winter:"2〜3週間に1回（控えめ）" },
-    "冷え / 乾燥しすぎ","“今ここ”に戻すアンカー。自分の場所を作れる。",
-    assetUrl("assets/plants/plants6.jpeg")
+    "冷え / 乾燥しすぎ","“今ここ”に戻すアンカー。自分の場所を作れる。", IMG(6)
   ),
   monstera: plant("モンステラ","うれしい便り","明るい室内（直射NG）",
     { summer:"7〜10日に1回（表面が乾いたら）", winter:"10〜14日に1回（控えめ）" },
-    "冷え / 直射","大きい葉の余白で落ち着く。視界の休憩所。",
-    assetUrl("assets/plants/plants7.jpeg")
+    "冷え / 直射","大きい葉の余白で落ち着く。視界の休憩所。", IMG(7)
   ),
   schefflera: plant("シェフレラ（カポック）","実直","明るい室内",
     { summer:"7〜10日に1回（乾いたら）", winter:"10〜14日に1回（控えめ）" },
-    "寒さ / 過湿","丈夫で折れにくい。『ほどほどでいい』を思い出せる。",
-    assetUrl("assets/plants/plants8.jpeg")
+    "寒さ / 過湿","丈夫で折れにくい。『ほどほどでいい』を思い出せる。", IMG(8)
   ),
   umbellata: plant("フィカス・ウンベラータ","すこやか","明るい室内（直射NG）",
     { summer:"7〜10日に1回（乾いたら）", winter:"10〜14日に1回（控えめ）" },
-    "冷え / 急な移動","呼吸が戻る。思考の熱を下げる。",
-    assetUrl("assets/plants/plants9.jpeg")
+    "冷え / 急な移動","呼吸が戻る。思考の熱を下げる。", IMG(9)
   ),
   everfresh: plant("エバーフレッシュ","歓喜","明るい室内（直射NG）",
     { summer:"5〜7日に1回（やや湿り気）", winter:"10〜14日に1回（控えめ）" },
-    "乾燥しすぎ / 冷え","葉が閉じる動きで1日の区切りが作れる。",
-    assetUrl("assets/plants/plants10.jpeg")
+    "乾燥しすぎ / 冷え","葉が閉じる動きで1日の区切りが作れる。", IMG(10)
   ),
   ivy: plant("アイビー（ヘデラ）","友情","明るい室内〜半日陰",
     { summer:"5〜10日に1回（乾いたら）", winter:"10〜14日に1回（控えめ）" },
-    "水切れ放置 / 直射","ちょい世話で満足感。手持ち無沙汰を優しく埋める。",
-    assetUrl("assets/plants/plants11.jpeg")
+    "水切れ放置 / 直射","ちょい世話で満足感。手持ち無沙汰を優しく埋める。", IMG(11)
   ),
   spider: plant("オリヅルラン","祝賀","明るい室内（直射NG）",
     { summer:"7〜10日に1回（乾いたら）", winter:"10〜14日に1回（控えめ）" },
-    "冷え / 過湿","丈夫で増える＝小さな成功体験が積み上がる。",
-    assetUrl("assets/plants/plants12.jpeg")
+    "冷え / 過湿","丈夫で増える＝小さな成功体験が積み上がる。", IMG(12)
   ),
   spath: plant("スパティフィラム","清らかな心","明るい日陰（強光NG）",
     { summer:"5〜7日に1回（乾く前に軽く）", winter:"10〜14日に1回（控えめ）" },
-    "乾燥しすぎ / 直射","しおれ→水で戻る。反応が分かりやすく安心。",
-    assetUrl("assets/plants/plants13.jpeg")
+    "乾燥しすぎ / 直射","しおれ→水で戻る。反応が分かりやすく安心。", IMG(13)
   ),
   syngonium: plant("シンゴニウム","喜び","明るい室内（直射NG）",
     { summer:"7〜10日に1回（乾いたら）", winter:"10〜14日に1回（控えめ）" },
-    "寒さ / 過湿","観察の対象になって、考えすぎが軽くなる。",
-    assetUrl("assets/plants/plants14.jpeg")
+    "寒さ / 過湿","観察の対象になって、考えすぎが軽くなる。", IMG(14)
   ),
   echeveria: plant("多肉植物（エケベリア系）","優美","明るい場所（強光は慣らす）",
     { summer:"2〜3週間に1回（乾いてから）", winter:"4〜6週間に1回（控えめ）" },
-    "水やり過多 / 日照不足","世話が少なく静けさ向き。神経の休憩に合う。",
-    assetUrl("assets/plants/plants15.jpeg")
+    "水やり過多 / 日照不足","世話が少なく静けさ向き。神経の休憩に合う。", IMG(15)
   ),
   cactus: plant("サボテン（小型）","枯れない愛","明るい場所（強光は慣らす）",
     { summer:"3〜4週間に1回（乾いてから）", winter:"6〜8週間に1回（ほぼ不要）" },
-    "水やり過多 / 急な強光","余白の象徴。やらなくても崩れない安心。",
-    assetUrl("assets/plants/plants16.jpeg")
+    "水やり過多 / 急な強光","余白の象徴。やらなくても崩れない安心。", IMG(16)
   ),
   peperomia: plant("ペペロミア","可憐","明るい室内（直射NG）",
     { summer:"7〜10日に1回（乾いたら）", winter:"10〜14日に1回（控えめ）" },
-    "冷え / 過湿","小さく優しい存在。自分のための小習慣が作れる。",
-    assetUrl("assets/plants/plants17.jpeg")
+    "冷え / 過湿","小さく優しい存在。自分のための小習慣が作れる。", IMG(17)
   ),
   pilea: plant("ピレア（パンケーキプランツ）","救済","明るい室内（直射NG）",
     { summer:"7〜10日に1回（乾いたら）", winter:"10〜14日に1回（控えめ）" },
-    "寒さ / 過湿","丸い葉がやさしい。罪悪感を下げて“自分OK”に寄せる。",
-    assetUrl("assets/plants/plants18.jpeg")
+    "寒さ / 過湿","丸い葉がやさしい。罪悪感を下げて“自分OK”に寄せる。", IMG(18)
   ),
   hoya: plant("ホヤ（カルノーサ等）","人生の幸福","明るい室内（直射NG）",
     { summer:"2〜3週間に1回（乾いてから）", winter:"4〜6週間に1回（控えめ）" },
-    "過湿 / 寒さ","乾かし気味でOK。頑張りすぎず続く。",
-    assetUrl("assets/plants/plants19.jpeg")
+    "過湿 / 寒さ","乾かし気味でOK。頑張りすぎず続く。", IMG(19)
   ),
   calathea: plant("カラテア","飛躍","明るい日陰（直射NG）",
     { summer:"5〜7日に1回（乾かしすぎない）", winter:"10日に1回（控えめ）" },
-    "乾燥しすぎ / 冷風","丁寧に扱う時間が自分への許可になる（少し難しめ）。",
-    assetUrl("assets/plants/plants20.jpeg")
+    "乾燥しすぎ / 冷風","丁寧に扱う時間が自分への許可になる（少し難しめ）。", IMG(20)
   ),
 };
 
@@ -180,30 +149,32 @@ const TYPE_POOLS = {
 /* ===============================
    DOM
    =============================== */
-const $ = (q)=>document.querySelector(q);
+const $ = (q) => document.querySelector(q);
+
 const quizEl = $("#quiz");
 const answeredCountEl = $("#answeredCount");
 const progressFillEl = $("#progressFill");
 
 const aboutBox = $("#aboutBox");
-$("#btnAbout")?.addEventListener("click", ()=>{ aboutBox.hidden = !aboutBox.hidden; });
+$("#btnAbout")?.addEventListener("click", () => { aboutBox.hidden = !aboutBox.hidden; });
 
-const goDiagnosis = ()=>document.querySelector("#diagnosis")?.scrollIntoView({behavior:"smooth", block:"start"});
+const goDiagnosis = () => $("#diagnosis")?.scrollIntoView({ behavior:"smooth", block:"start" });
 $("#btnStart")?.addEventListener("click", goDiagnosis);
 $("#btnStart2")?.addEventListener("click", goDiagnosis);
 $("#btnToForm")?.addEventListener("click", goDiagnosis);
 
 $("#btnBack")?.addEventListener("click", goDiagnosis);
-$("#btnTop")?.addEventListener("click", ()=>document.querySelector("#top")?.scrollIntoView({behavior:"smooth"}));
+$("#btnTop")?.addEventListener("click", () => $("#top")?.scrollIntoView({ behavior:"smooth" }));
+$("#btnTop2")?.addEventListener("click", () => $("#top")?.scrollIntoView({ behavior:"smooth" }));
 
-const btnReset = $("#btnReset");
+const btnReset  = $("#btnReset");
 const btnResult = $("#btnResult");
 
 const resultSection = $("#result");
-const mainTypeEl = $("#mainType");
-const subTypeEl = $("#subType");
+const mainTypeEl    = $("#mainType");
+const subTypeEl     = $("#subType");
 const typeSummaryEl = $("#typeSummary");
-const plantGridEl = $("#plantGrid");
+const plantGridEl   = $("#plantGrid");
 
 /* ===============================
    状態
@@ -211,19 +182,19 @@ const plantGridEl = $("#plantGrid");
 let answers = Array(QUESTIONS.length).fill(null);
 
 /* ===============================
-   UI生成
+   起動
    =============================== */
 render();
 
-btnReset?.addEventListener("click", ()=>{
+btnReset?.addEventListener("click", () => {
   answers = Array(QUESTIONS.length).fill(null);
   render();
   resultSection.hidden = true;
   goDiagnosis();
 });
 
-btnResult?.addEventListener("click", ()=>{
-  if (!answers.every(v=>v!==null)){
+btnResult?.addEventListener("click", () => {
+  if (!answers.every(v => v !== null)) {
     scrollToFirstUnanswered();
     return;
   }
@@ -231,22 +202,26 @@ btnResult?.addEventListener("click", ()=>{
   renderResult(res);
 });
 
+/* ===============================
+   UI生成
+   =============================== */
 function render(){
   quizEl.innerHTML = "";
-  QUESTIONS.forEach((q, idx)=>{
+
+  QUESTIONS.forEach((q, idx) => {
     const wrap = document.createElement("div");
     wrap.className = "q";
     wrap.dataset.q = String(idx);
 
     const title = document.createElement("div");
     title.className = "q-title";
-    title.textContent = `${idx+1}) ${q.text}`;
+    title.textContent = `${idx + 1}) ${q.text}`;
     wrap.appendChild(title);
 
     const opts = document.createElement("div");
     opts.className = "options";
 
-    SCALE.forEach(opt=>{
+    SCALE.forEach(opt => {
       const label = document.createElement("label");
       label.className = "option";
 
@@ -256,7 +231,7 @@ function render(){
       input.value = String(opt.score);
       input.checked = answers[idx] === opt.score;
 
-      input.addEventListener("change", ()=>{
+      input.addEventListener("change", () => {
         answers[idx] = opt.score;
         updateProgress();
       });
@@ -282,31 +257,31 @@ function render(){
 }
 
 function updateProgress(){
-  const answered = answers.filter(v=>v!==null).length;
+  const answered = answers.filter(v => v !== null).length;
   answeredCountEl.textContent = String(answered);
-  progressFillEl.style.width = `${Math.round(answered/QUESTIONS.length*100)}%`;
+  progressFillEl.style.width = `${Math.round(answered / QUESTIONS.length * 100)}%`;
   btnResult.disabled = answered !== QUESTIONS.length;
 }
 
 function scrollToFirstUnanswered(){
-  for (let i=0; i<answers.length; i++){
+  for (let i = 0; i < answers.length; i++){
     if (answers[i] === null){
-      document.querySelector(`.q[data-q="${i}"]`)?.scrollIntoView({behavior:"smooth", block:"center"});
+      document.querySelector(`.q[data-q="${i}"]`)?.scrollIntoView({ behavior:"smooth", block:"center" });
       break;
     }
   }
 }
 
 /* ===============================
-   診断＆選出
+   診断
    =============================== */
 function diagnose(){
-  const scores = Object.fromEntries(TYPES.map(t=>[t.id, 0]));
+  const scores = Object.fromEntries(TYPES.map(t => [t.id, 0]));
   let seed = 0;
 
-  answers.forEach((ans, i)=>{
+  answers.forEach((ans, i) => {
     const v = ans ?? 3;
-    seed = seed * 31 + v * (i+1);
+    seed = seed * 31 + v * (i + 1);
     const w = QUESTIONS[i].weights;
     for (const [typeId, weight] of Object.entries(w)){
       scores[typeId] += v * weight;
@@ -314,13 +289,13 @@ function diagnose(){
   });
 
   const ranked = [...TYPES]
-    .map(t => ({...t, score: scores[t.id]}))
-    .sort((a,b)=> b.score - a.score);
+    .map(t => ({ ...t, score: scores[t.id] }))
+    .sort((a, b) => b.score - a.score);
 
   const main = ranked[0];
   const sub  = ranked[1];
-
   const plants = pickPlants(main.id, sub.id, seed);
+
   return { scores, main, sub, plants };
 }
 
@@ -332,6 +307,7 @@ function pickPlants(mainId, subId, seed){
   shuffleInPlace(subPool, seed + 999);
 
   const out = [];
+
   for (const id of mainPool){
     if (out.length >= 2) break;
     if (!out.includes(id)) out.push(id);
@@ -345,11 +321,11 @@ function pickPlants(mainId, subId, seed){
     if (!out.includes(id)) out.push(id);
   }
 
-  return out.slice(0,3).map(id => PLANTS[id]).filter(Boolean);
+  return out.slice(0, 3).map(id => PLANTS[id]).filter(Boolean);
 }
 
 function shuffleInPlace(arr, seed){
-  let x = (seed | 0) || 123456789;
+  let x = (seed | 0) || 123456789; // xorshift32
   for (let i = arr.length - 1; i > 0; i--){
     x ^= x << 13; x ^= x >>> 17; x ^= x << 5;
     const j = Math.abs(x) % (i + 1);
@@ -358,7 +334,7 @@ function shuffleInPlace(arr, seed){
 }
 
 /* ===============================
-   表示（画像つき）
+   結果表示
    =============================== */
 function renderResult(res){
   mainTypeEl.textContent = res.main.name;
@@ -367,18 +343,18 @@ function renderResult(res){
 
   plantGridEl.innerHTML = "";
 
-  res.plants.forEach((p, idx)=>{
+  res.plants.forEach((p, idx) => {
+    const div = document.createElement("div");
+    div.className = "plant";
+
     const imgHtml = p.img
       ? `<div class="plant-img-wrap">
-           <img class="plant-img" src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy"
-             onerror="this.style.display='none'">
+           <img class="plant-img" src="${escAttr(p.img)}" alt="${escAttr(p.name)}" loading="lazy">
          </div>`
       : "";
 
-    const div = document.createElement("div");
-    div.className = "plant";
     div.innerHTML = `
-      <h3>植物${idx+1}：${esc(p.name)} <span class="tag">花言葉：${esc(p.hanakotoba)}</span></h3>
+      <h3>植物${idx + 1}：${esc(p.name)} <span class="tag">花言葉：${esc(p.hanakotoba)}</span></h3>
       ${imgHtml}
       <div class="kv">
         <div class="k">置き場所</div><div class="v">${esc(p.place)}</div>
@@ -390,13 +366,17 @@ function renderResult(res){
         <div class="v">${esc(p.why)}</div>
       </div>
     `;
+
     plantGridEl.appendChild(div);
   });
 
   resultSection.hidden = false;
-  resultSection.scrollIntoView({behavior:"smooth", block:"start"});
+  resultSection.scrollIntoView({ behavior:"smooth", block:"start" });
 }
 
+/* ===============================
+   util
+   =============================== */
 function esc(s){
   return String(s)
     .replaceAll("&","&amp;")
@@ -406,12 +386,11 @@ function esc(s){
     .replaceAll("'","&#39;");
 }
 
-const IMG_BASE = "assets/plants/";
+// attribute用（URLもここに通す）
+function escAttr(s){
+  return esc(s);
+}
 
-/* img を追加（画像パスを assets/plants/ に固定） */
 function plant(name, hanakotoba, place, water, ng, why, img){
-  return {
-    name, hanakotoba, place, water, ng, why,
-    img: img ? (IMG_BASE + img) : ""
-  };
+  return { name, hanakotoba, place, water, ng, why, img };
 }
