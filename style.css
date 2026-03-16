@@ -1,6 +1,6 @@
 /* ====== 余白の一鉢 | Base ====== */
 :root{
-  --bg: #F3F0EB;             /* グレージュ */
+  --bg: #F3F0EB;
   --card: rgba(255,255,255,.82);
   --text: #2B2B2B;
   --muted: #5A5A5A;
@@ -173,6 +173,7 @@ a{ color:inherit; text-decoration:none; }
   height:100%;
   width:0%;
   background: rgba(47,58,47,.70);
+  transition: width 0.3s ease;
 }
 .progressText{
   font-size: 12px;
@@ -213,10 +214,17 @@ a{ color:inherit; text-decoration:none; }
   border-radius: 14px;
   padding: 10px;
   background: rgba(255,255,255,.75);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.option:hover{
+  background: rgba(47,58,47,.06);
 }
 
 .option input{
   transform: scale(1.1);
+  accent-color: var(--green);
 }
 
 .badge{
@@ -228,6 +236,7 @@ a{ color:inherit; text-decoration:none; }
   justify-content:center;
   font-weight: 900;
   background: rgba(0,0,0,.06);
+  flex-shrink: 0;
 }
 
 .actionsRow{
@@ -300,15 +309,15 @@ a{ color:inherit; text-decoration:none; }
   border: 1px solid rgba(0,0,0,.08);
   border-radius: 14px;
   overflow:hidden;
-  background: #fff;
+  background: #f9f9f9;
 }
 
 .plant-img{
   display:block;
   width: 100%;
   height: auto;
-  max-height: 420px;        /* 大きすぎ防止 */
-  object-fit: contain;
+  max-height: 420px;
+  object-fit: cover;
 }
 
 .kv{
