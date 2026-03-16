@@ -5,11 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>余白の一鉢｜観葉植物診断</title>
   <meta name="description" content="12問で、今のあなたに合う観葉植物を提案します。主タイプ×副タイプからおすすめ3種＋育て方＋花言葉＋なぜ合うかを表示します。" />
-
-  <!-- cache bust: ここだけ数字変えればOK -->
-  <link rel="stylesheet" href="./style.css?v=img003" />
+  <link rel="stylesheet" href="./style.css?v=img004" />
 </head>
-
 <body id="top">
   <header class="site-header">
     <div class="container header-row">
@@ -23,21 +20,17 @@
       <div class="header-pill">個人情報不要 / 約2分</div>
     </div>
   </header>
-
   <main class="container">
-    <!-- HERO -->
     <section class="hero card">
       <h1>忙しい日々に、余白を取り戻す一鉢を。</h1>
       <p class="text-muted">
         12問で、今のあなたに合う「育てやすい観葉植物」を提案します。<br>
         主タイプ×副タイプから、おすすめ3種＋育て方・花言葉・なぜ合うかを表示します。
       </p>
-
       <div class="hero-actions">
         <button class="btn primary" id="btnStart" type="button">診断をはじめる</button>
         <button class="btn ghost" id="btnAbout" type="button">この診断について</button>
       </div>
-
       <div class="about" id="aboutBox" hidden>
         <div class="hr"></div>
         <h2>この診断について</h2>
@@ -48,39 +41,29 @@
         </ul>
       </div>
     </section>
-
     <div class="hr"></div>
-
-    <!-- DIAGNOSIS -->
     <section id="diagnosis" class="card">
       <div class="sectionTitle">診断フォーム</div>
       <div class="embedTop">
         <span>※直感で選んでOK。途中で戻れます</span>
         <span class="right">うまく表示されない時は更新（F5）</span>
       </div>
-
       <div class="progressRow">
         <div class="progressTrack">
           <div class="progressFill" id="progressFill"></div>
         </div>
         <div class="progressText"><span id="answeredCount">0</span> / 12 answered</div>
       </div>
-
       <div id="quiz" class="quiz"></div>
-
       <div class="actionsRow">
         <button class="btn ghost" id="btnReset" type="button">リセット</button>
         <button class="btn primary" id="btnResult" type="button" disabled>結果を見る</button>
         <button class="btn ghost" id="btnTop" type="button">TOPへ戻る</button>
       </div>
     </section>
-
     <div class="hr"></div>
-
-    <!-- RESULT -->
     <section id="result" class="card" hidden>
       <div class="sectionTitle">あなたの今のタイプ</div>
-
       <div class="typeGrid">
         <div class="typeBox">
           <div class="label">主タイプ</div>
@@ -91,35 +74,26 @@
           <div class="typeName" id="subType">-</div>
         </div>
       </div>
-
       <p class="typeSummary" id="typeSummary"></p>
-
       <div class="noteLine">おすすめの植物：3つ表示されます</div>
-
       <div id="plantGrid" class="plantGrid"></div>
-
       <div class="hr"></div>
-
       <div class="miniTitle">共通の育て方（超ざっくり）</div>
       <ul class="tips">
         <li>置き場所：明るい室内（直射日光は避ける）</li>
         <li>水やり：土が乾いてからたっぷり（冬は控えめ）</li>
         <li>NG：受け皿に水を溜めっぱなし / 低温の窓辺</li>
       </ul>
-
       <div class="actionsRow">
         <button class="btn ghost" id="btnBack" type="button">質問に戻る</button>
         <button class="btn primary" id="btnTop2" type="button">TOPへ戻る</button>
       </div>
     </section>
-
     <footer class="footer">
       <span>© 余白の一鉢</span>
       <span class="text-muted">GitHub Pages</span>
     </footer>
   </main>
-
-  <!-- cache bust: ここだけ数字変えればOK -->
-  <script src="./app_fix.js?v=img002" defer></script>
+  <script src="./app_fix.js?v=img004" defer></script>
 </body>
 </html>
