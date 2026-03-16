@@ -1,7 +1,7 @@
 /* ====== 余白の一鉢 | app_fix.js v7 ====== */
 
 function imgUrl(fileName) {
-  return "./assets/plants/" + fileName;
+  return "./" + fileName;
 }
 
 var TYPES = [
