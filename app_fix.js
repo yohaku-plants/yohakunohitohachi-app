@@ -1,6 +1,4 @@
-/* ====== 余白の一鉢 | app_fix.js v6 ======
-   画像パス: ./assets/plants/plants1.jpeg ~ plants20.jpeg
-   ====================================== */
+/* ====== 余白の一鉢 | app_fix.js v7 ====== */
 
 function imgUrl(fileName) {
   return "./assets/plants/" + fileName;
@@ -9,11 +7,11 @@ function imgUrl(fileName) {
 var TYPES = [
   { id: "depletion", icon: "🍂", name: "余力枯渇タイプ（消耗）",
     summary: "毎日がんばりすぎて、気づいたら空っぽになっていませんか。回復する前に次のことが来てしまう、そんな状態かもしれません。まずは「お世話が少なくてもちゃんと育つ」植物と一緒に、小さな成功体験を積み重ねていきましょう。" },
-  { id: "overheat",  icon: "🌀", name: "思考過熱タイプ（思考オーバーヒート）",
+  { id: "overheat", icon: "🌀", name: "思考過熱タイプ（思考オーバーヒート）",
     summary: "頭の中でいろんなことがぐるぐると回って、なかなか止まらないタイプです。考えること自体は悪くないけれど、休憩も大切。目に入るだけで気持ちが落ち着く植物が、そっとブレーキをかけてくれるかもしれません。" },
-  { id: "overstim",  icon: "⚡", name: "刺激過多タイプ（刺激疲れ）",
+  { id: "overstim", icon: "⚡", name: "刺激過多タイプ（刺激疲れ）",
     summary: "情報やスマホ、予定の多さで、神経がじわじわ疲れているかもしれません。「何もしない時間」を少しずつ取り戻すために、静かにそこにいてくれる植物を部屋に迎えてみましょう。" },
-  { id: "selfsup",   icon: "🌾", name: "自己抑制タイプ（自己後回し）",
+  { id: "selfsup", icon: "🌾", name: "自己抑制タイプ（自己後回し）",
     summary: "誰かのことを優先するのが自然になっていて、自分のことは後回しになりがちではないですか。「自分のために何かをする」ことへの練習として、植物のお世話はぴったりです。あなたのために育てていい、そんな一鉢を見つけましょう。" }
 ];
 
@@ -41,26 +39,26 @@ var SCALE = [
 ];
 
 var PLANTS = {
-  sanse:      { name:"サンスベリア",       icon:"🌵", hana:"永久・不滅",    place:"明るい室内〜半日陰", ws:"2〜3週間に1回（乾いてから）",  ww:"4〜6週間に1回（乾いてから）",  ng:"水のやりすぎ・低温",  why:"放っておいてもすくすく育つ、頼もしい植物です。お世話が少なくても大丈夫なので、余力が少ないときこそそっと寄り添ってくれます。",               img:"plants1.jpeg"  },
-  zz:         { name:"ZZプランツ",         icon:"🌿", hana:"輝く未来",      place:"明るい室内〜半日陰", ws:"2〜3週間に1回（乾いてから）",  ww:"4〜6週間に1回（乾いてから）",  ng:"水やり過多（根腐れ）", why:"水やりを忘れても元気でいてくれる、優しい植物です。「自分を後回しにしがち」なあなたにも、無理なく続けられます。",       img:"plants2.jpeg"  },
-  pothos:     { name:"ポトス",             icon:"🍃", hana:"永遠の富",      place:"明るい室内（レース越し）", ws:"7〜10日に1回（表面が乾いたら）", ww:"10〜14日に1回（乾き気味）", ng:"直射日光・受け皿の水",why:"どんな環境でもたくましく育ちます。悩んでいる日も、なんとなく眺めるだけで「続けられた」という気持ちが芽生えてきます。",     img:"plants3.jpeg"  },
-  pachira:    { name:"パキラ",             icon:"🌴", hana:"快活・勝利",    place:"明るい室内（直射NG）", ws:"7〜10日に1回（乾いたら）",   ww:"10〜14日に1回（控えめ）",    ng:"水やり過多・寒さ",    why:"水やりのタイミングが分かりやすく、ルーティンにしやすい植物です。規則正しいお世話が、心の安定にもつながります。",             img:"plants4.jpeg"  },
-  dracaena:   { name:"ドラセナ",           icon:"🌾", hana:"幸福",          place:"明るい室内〜半日陰", ws:"10日に1回（乾いてから）",      ww:"2〜3週間に1回（控えめ）",    ng:"寒さ・過湿",          why:"部屋にどんと構えてくれる、頼もしい存在感の植物です。散らかりがちな気持ちを、そっとまとめてくれます。",                 img:"plants5.jpeg"  },
-  gajumaru:   { name:"ガジュマル",         icon:"🌳", hana:"健康",          place:"明るい室内（直射は避ける）", ws:"7〜10日に1回（乾いたら）", ww:"2〜3週間に1回（控えめ）",   ng:"冷え・乾燥しすぎ",    why:"ぽてっとした幹がチャーミングで、見るだけで気持ちがほぐれます。今この瞬間に戻ってこられる、アンカーのような存在です。",           img:"plants6.jpeg"  },
-  monstera:   { name:"モンステラ",         icon:"🌿", hana:"うれしい便り",  place:"明るい室内（直射NG）", ws:"7〜10日に1回（表面が乾いたら）", ww:"10〜14日に1回（控えめ）", ng:"冷え・直射",           why:"大きくて個性的な葉っぱが、視界に余白をつくってくれます。情報過多で疲れた目と頭に、ゆっくり休んでいいよと伝えてくれるようです。",             img:"plants7.jpeg"  },
-  schefflera: { name:"シェフレラ",         icon:"🍀", hana:"実直",          place:"明るい室内",         ws:"7〜10日に1回（乾いたら）",   ww:"10〜14日に1回（控えめ）",    ng:"寒さ・過湿",          why:"丈夫で手がかからず、ちょっと放置しても折れない頼もしさがあります。完璧にしなくていい、を思い出させてくれる植物です。",       img:"plants8.jpeg"  },
-  umbellata:  { name:"ウンベラータ",       icon:"🌱", hana:"すこやか",      place:"明るい室内（直射NG）", ws:"7〜10日に1回（乾いたら）",   ww:"10〜14日に1回（控えめ）",    ng:"冷え・急な移動",      why:"ハート形の大きな葉が、見ているだけで深呼吸させてくれます。考えすぎて熱くなった頭を、そっと冷ましてくれるような植物です。",                       img:"plants9.jpeg"  },
-  everfresh:  { name:"エバーフレッシュ",   icon:"✨", hana:"歓喜",          place:"明るい室内（直射NG）", ws:"5〜7日に1回（やや湿り気）",  ww:"10〜14日に1回（控えめ）",    ng:"乾燥しすぎ・冷え",    why:"夜になると葉を閉じる、ユニークな植物です。その動きが、1日の終わりを感じさせてくれて、オフにするきっかけをつくってくれます。",                         img:"plants10.jpeg" },
-  ivy:        { name:"アイビー",           icon:"🌿", hana:"友情",          place:"明るい室内〜半日陰", ws:"5〜10日に1回（乾いたら）",   ww:"10〜14日に1回（控えめ）",    ng:"水切れ放置・直射",    why:"つるを伸ばしながら育つ姿が可愛く、ちょっとしたお世話が満足感につながります。何かしたい気持ちを、優しく受け止めてくれます。",               img:"plants11.jpeg" },
-  spider:     { name:"オリヅルラン",       icon:"🌾", hana:"祝賀",          place:"明るい室内（直射NG）", ws:"7〜10日に1回（乾いたら）",   ww:"10〜14日に1回（控えめ）",    ng:"冷え・過湿",          why:"丈夫でどんどん増えていく植物です。子株が育つたびに、小さな達成感が積み上がっていきます。",           img:"plants12.jpeg" },
-  spath:      { name:"スパティフィラム",   icon:"🌸", hana:"清らかな心",    place:"明るい日陰（強光NG）", ws:"5〜7日に1回（乾く前に軽く）", ww:"10〜14日に1回（控えめ）",   ng:"乾燥しすぎ・直射",    why:"水が足りないとちょっとしおれて、水をあげると復活する、分かりやすい植物です。お世話のサインが掴みやすくて、初めてでも安心できます。",           img:"plants13.jpeg" },
-  syngonium:  { name:"シンゴニウム",       icon:"🍃", hana:"喜び",          place:"明るい室内（直射NG）", ws:"7〜10日に1回（乾いたら）",   ww:"10〜14日に1回（控えめ）",    ng:"寒さ・過湿",          why:"新しい葉がどんどん出てきて、観察するのが楽しい植物です。何かに注意を向けることで、ぐるぐる思考が少し和らぎます。",                       img:"plants14.jpeg" },
-  echeveria:  { name:"エケベリア（多肉）", icon:"🌵", hana:"優美",          place:"明るい場所（強光は慣らす）", ws:"2〜3週間に1回（乾いてから）", ww:"4〜6週間に1回（控えめ）", ng:"水やり過多・日照不足", why:"水やりの頻度がとても少なく、静かに育ちます。刺激が多くて疲れているときに、「何もしなくていい」という安心感を与えてくれます。",           img:"plants15.jpeg" },
-  cactus:     { name:"サボテン（小型）",   icon:"🌵", hana:"枯れない愛",    place:"明るい場所（強光は慣らす）", ws:"3〜4週間に1回（乾いてから）", ww:"6〜8週間に1回（ほぼ不要）", ng:"水やり過多・急な強光", why:"水やりがほぼ不要なのに、しっかり生きている姿が頼もしいです。余白の象徴として、ただそこにいてくれるだけで十分な存在です。",               img:"plants16.jpeg" },
-  peperomia:  { name:"ペペロミア",         icon:"🍀", hana:"可憐",          place:"明るい室内（直射NG）", ws:"7〜10日に1回（乾いたら）",   ww:"10〜14日に1回（控えめ）",    ng:"冷え・過湿",          why:"小さくてかわいい植物です。自分のためだけにお世話する時間をつくることが、少しずつ「自分を大切にする練習」になっていきます。",       img:"plants17.jpeg" },
-  pilea:      { name:"ピレア",             icon:"🌱", hana:"救済",          place:"明るい室内（直射NG）", ws:"7〜10日に1回（乾いたら）",   ww:"10〜14日に1回（控えめ）",    ng:"寒さ・過湿",          why:"丸くてやわらかい葉っぱが、見ているだけでほっとします。「自分のためにやっていいんだ」という気持ちを、そっと後押ししてくれます。",               img:"plants18.jpeg" },
-  hoya:       { name:"ホヤ",               icon:"🌸", hana:"人生の幸福",    place:"明るい室内（直射NG）", ws:"2〜3週間に1回（乾いてから）", ww:"4〜6週間に1回（控えめ）",   ng:"過湿・寒さ",           why:"乾かし気味でOKという、ゆるいお世話で育つ植物です。頑張りすぎず、ほどほどでいいという感覚を教えてくれます。",                   img:"plants19.jpeg" },
-  calathea:   { name:"カラテア",           icon:"🌿", hana:"飛躍",          place:"明るい日陰（直射NG）", ws:"5〜7日に1回（乾かしすぎない）", ww:"10日に1回（控えめ）",     ng:"乾燥しすぎ・冷風",    why:"少し気をつかって育てる植物です。その「丁寧に扱う時間」が、自分自身を大切にすることへの許可になっていきます。",                 img:"plants20.jpeg" }
+  sanse:      { name:"サンスベリア",       icon:"🌵", hana:"永久・不滅",   place:"明るい室内〜半日陰",          ws:"2〜3週間に1回（乾いてから）",     ww:"4〜6週間に1回（乾いてから）",  ng:"水のやりすぎ・低温",   why:"放っておいてもすくすく育つ、頼もしい植物です。お世話が少なくても大丈夫なので、余力が少ないときこそそっと寄り添ってくれます。",               img:"plants1.jpeg"  },
+  zz:         { name:"ZZプランツ",         icon:"🌿", hana:"輝く未来",     place:"明るい室内〜半日陰",          ws:"2〜3週間に1回（乾いてから）",     ww:"4〜6週間に1回（乾いてから）",  ng:"水やり過多（根腐れ）", why:"水やりを忘れても元気でいてくれる、優しい植物です。無理なく続けられます。",                                                                   img:"plants2.jpeg"  },
+  pothos:     { name:"ポトス",             icon:"🍃", hana:"永遠の富",     place:"明るい室内（レース越し）",    ws:"7〜10日に1回（表面が乾いたら）",  ww:"10〜14日に1回（乾き気味）",    ng:"直射日光・受け皿の水", why:"どんな環境でもたくましく育ちます。悩んでいる日も、眺めるだけで続けられた気持ちが芽生えてきます。",                                             img:"plants3.jpeg"  },
+  pachira:    { name:"パキラ",             icon:"🌴", hana:"快活・勝利",   place:"明るい室内（直射NG）",        ws:"7〜10日に1回（乾いたら）",        ww:"10〜14日に1回（控えめ）",      ng:"水やり過多・寒さ",     why:"水やりのタイミングが分かりやすく、ルーティンにしやすい植物です。規則正しいお世話が、心の安定にもつながります。",                             img:"plants4.jpeg"  },
+  dracaena:   { name:"ドラセナ",           icon:"🌾", hana:"幸福",         place:"明るい室内〜半日陰",          ws:"10日に1回（乾いてから）",         ww:"2〜3週間に1回（控えめ）",      ng:"寒さ・過湿",           why:"部屋にどんと構えてくれる、頼もしい存在感の植物です。散らかりがちな気持ちを、そっとまとめてくれます。",                                         img:"plants5.jpeg"  },
+  gajumaru:   { name:"ガジュマル",         icon:"🌳", hana:"健康",         place:"明るい室内（直射は避ける）",  ws:"7〜10日に1回（乾いたら）",        ww:"2〜3週間に1回（控えめ）",      ng:"冷え・乾燥しすぎ",     why:"ぽてっとした幹がチャーミングで、見るだけで気持ちがほぐれます。今この瞬間に戻ってこられる、アンカーのような存在です。",                         img:"plants6.jpeg"  },
+  monstera:   { name:"モンステラ",         icon:"🌿", hana:"うれしい便り", place:"明るい室内（直射NG）",        ws:"7〜10日に1回（表面が乾いたら）",  ww:"10〜14日に1回（控えめ）",      ng:"冷え・直射",           why:"大きくて個性的な葉っぱが、視界に余白をつくってくれます。情報過多で疲れた目と頭に、ゆっくり休んでいいよと伝えてくれるようです。",             img:"plants7.jpeg"  },
+  schefflera: { name:"シェフレラ",         icon:"🍀", hana:"実直",         place:"明るい室内",                  ws:"7〜10日に1回（乾いたら）",        ww:"10〜14日に1回（控えめ）",      ng:"寒さ・過湿",           why:"丈夫で手がかからず、ちょっと放置しても折れない頼もしさがあります。完璧にしなくていい、を思い出させてくれる植物です。",                         img:"plants8.jpeg"  },
+  umbellata:  { name:"ウンベラータ",       icon:"🌱", hana:"すこやか",     place:"明るい室内（直射NG）",        ws:"7〜10日に1回（乾いたら）",        ww:"10〜14日に1回（控えめ）",      ng:"冷え・急な移動",       why:"ハート形の大きな葉が、見ているだけで深呼吸させてくれます。考えすぎて熱くなった頭を、そっと冷ましてくれるような植物です。",                     img:"plants9.jpeg"  },
+  everfresh:  { name:"エバーフレッシュ",   icon:"✨", hana:"歓喜",         place:"明るい室内（直射NG）",        ws:"5〜7日に1回（やや湿り気）",       ww:"10〜14日に1回（控えめ）",      ng:"乾燥しすぎ・冷え",     why:"夜になると葉を閉じる、ユニークな植物です。その動きが1日の終わりを感じさせてくれて、オフにするきっかけをつくってくれます。",                   img:"plants10.jpeg" },
+  ivy:        { name:"アイビー",           icon:"🌿", hana:"友情",         place:"明るい室内〜半日陰",          ws:"5〜10日に1回（乾いたら）",        ww:"10〜14日に1回（控えめ）",      ng:"水切れ放置・直射",     why:"つるを伸ばしながら育つ姿が可愛く、ちょっとしたお世話が満足感につながります。",                                                                   img:"plants11.jpeg" },
+  spider:     { name:"オリヅルラン",       icon:"🌾", hana:"祝賀",         place:"明るい室内（直射NG）",        ws:"7〜10日に1回（乾いたら）",        ww:"10〜14日に1回（控えめ）",      ng:"冷え・過湿",           why:"丈夫でどんどん増えていく植物です。子株が育つたびに、小さな達成感が積み上がっていきます。",                                                       img:"plants12.jpeg" },
+  spath:      { name:"スパティフィラム",   icon:"🌸", hana:"清らかな心",   place:"明るい日陰（強光NG）",        ws:"5〜7日に1回（乾く前に軽く）",     ww:"10〜14日に1回（控えめ）",      ng:"乾燥しすぎ・直射",     why:"水が足りないとしおれて、水をあげると復活する、分かりやすい植物です。お世話のサインが掴みやすくて安心できます。",                               img:"plants13.jpeg" },
+  syngonium:  { name:"シンゴニウム",       icon:"🍃", hana:"喜び",         place:"明るい室内（直射NG）",        ws:"7〜10日に1回（乾いたら）",        ww:"10〜14日に1回（控えめ）",      ng:"寒さ・過湿",           why:"新しい葉がどんどん出てきて、観察するのが楽しい植物です。何かに注意を向けることで、ぐるぐる思考が少し和らぎます。",                             img:"plants14.jpeg" },
+  echeveria:  { name:"エケベリア（多肉）", icon:"🌵", hana:"優美",         place:"明るい場所（強光は慣らす）",  ws:"2〜3週間に1回（乾いてから）",     ww:"4〜6週間に1回（控えめ）",      ng:"水やり過多・日照不足", why:"水やりの頻度がとても少なく、静かに育ちます。「何もしなくていい」という安心感を与えてくれます。",                                               img:"plants15.jpeg" },
+  cactus:     { name:"サボテン（小型）",   icon:"🌵", hana:"枯れない愛",   place:"明るい場所（強光は慣らす）",  ws:"3〜4週間に1回（乾いてから）",     ww:"6〜8週間に1回（ほぼ不要）",    ng:"水やり過多・急な強光", why:"水やりがほぼ不要なのに、しっかり生きている姿が頼もしいです。余白の象徴として、ただそこにいてくれるだけで十分な存在です。",                   img:"plants16.jpeg" },
+  peperomia:  { name:"ペペロミア",         icon:"🍀", hana:"可憐",         place:"明るい室内（直射NG）",        ws:"7〜10日に1回（乾いたら）",        ww:"10〜14日に1回（控えめ）",      ng:"冷え・過湿",           why:"小さくてかわいい植物です。自分のためだけにお世話する時間が、少しずつ「自分を大切にする練習」になっていきます。",                               img:"plants17.jpeg" },
+  pilea:      { name:"ピレア",             icon:"🌱", hana:"救済",         place:"明るい室内（直射NG）",        ws:"7〜10日に1回（乾いたら）",        ww:"10〜14日に1回（控えめ）",      ng:"寒さ・過湿",           why:"丸くてやわらかい葉っぱが、見ているだけでほっとします。「自分のためにやっていいんだ」という気持ちを、そっと後押ししてくれます。",               img:"plants18.jpeg" },
+  hoya:       { name:"ホヤ",               icon:"🌸", hana:"人生の幸福",   place:"明るい室内（直射NG）",        ws:"2〜3週間に1回（乾いてから）",     ww:"4〜6週間に1回（控えめ）",      ng:"過湿・寒さ",           why:"乾かし気味でOKという、ゆるいお世話で育つ植物です。頑張りすぎず、ほどほどでいいという感覚を教えてくれます。",                                   img:"plants19.jpeg" },
+  calathea:   { name:"カラテア",           icon:"🌿", hana:"飛躍",         place:"明るい日陰（直射NG）",        ws:"5〜7日に1回（乾かしすぎない）",   ww:"10日に1回（控えめ）",          ng:"乾燥しすぎ・冷風",     why:"少し気をつかって育てる植物です。その「丁寧に扱う時間」が、自分自身を大切にすることへの許可になっていきます。",                               img:"plants20.jpeg" }
 };
 
 var POOLS = {
@@ -93,9 +91,9 @@ document.getElementById("btnAbout").addEventListener("click", function () {
   aboutBox.hidden = !aboutBox.hidden;
 });
 document.getElementById("btnStart").addEventListener("click", function () { scrollToId("diagnosis"); });
-document.getElementById("btnTop").addEventListener("click", function ()   { scrollToId("top"); });
-document.getElementById("btnTop2").addEventListener("click", function ()  { scrollToId("top"); });
-document.getElementById("btnBack").addEventListener("click", function ()  { scrollToId("diagnosis"); });
+document.getElementById("btnTop").addEventListener("click",   function () { scrollToId("top"); });
+document.getElementById("btnTop2").addEventListener("click",  function () { scrollToId("top"); });
+document.getElementById("btnBack").addEventListener("click",  function () { scrollToId("diagnosis"); });
 
 btnReset.addEventListener("click", function () {
   answers = new Array(QUESTIONS.length).fill(null);
@@ -246,13 +244,23 @@ function renderResult(res) {
     h3.appendChild(tag);
     card.appendChild(h3);
 
+    /* ============================
+       画像（.jpeg → 失敗したら .jpg に自動切替）
+       ============================ */
     var imgWrap = document.createElement("div");
     imgWrap.className = "plant-img-wrap";
+
     var img = document.createElement("img");
     img.className = "plant-img";
-    img.src = imgUrl(p.img);
     img.alt = p.name;
     img.loading = "lazy";
+    img.src = "./assets/plants/" + p.img;
+    img.onerror = function () {
+      if (this.src.indexOf(".jpeg") !== -1) {
+        this.src = this.src.replace(".jpeg", ".jpg");
+      }
+    };
+
     imgWrap.appendChild(img);
     card.appendChild(imgWrap);
 
