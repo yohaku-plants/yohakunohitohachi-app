@@ -254,7 +254,7 @@ function renderResult(res) {
     img.className = "plant-img";
     img.alt = p.name;
     img.loading = "lazy";
-    img.src = "./assets/plants/" + p.img;
+    img.src = imgUrl(p.img);
     img.onerror = function () {
       if (this.src.indexOf(".jpeg") !== -1) {
         this.src = this.src.replace(".jpeg", ".jpg");
