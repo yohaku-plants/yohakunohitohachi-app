@@ -1,4 +1,4 @@
-/* ====== 余白の一鉢 | app_fix.js v10 ====== */
+/* ====== 余白の一鉢 | app_fix.js v11 ====== */
 
 var SITE_URL = "https://yohaku-plants.github.io/yohakunohitohachi-app/";
 
@@ -83,6 +83,11 @@ var subTypeEl     = document.getElementById("subType");
 var typeSummaryEl = document.getElementById("typeSummary");
 var plantGridEl   = document.getElementById("plantGrid");
 var aboutBox      = document.getElementById("aboutBox");
+
+/* ====== ボタンを横並びにするCSS追加 ====== */
+var heroStyle = document.createElement("style");
+heroStyle.textContent = ".hero-actions { flex-wrap: nowrap; } .hero-actions .btn { flex: 1; text-align: center; }";
+document.head.appendChild(heroStyle);
 
 function scrollToId(id) {
   var el = document.getElementById(id);
@@ -273,7 +278,9 @@ function renderResult(res) {
     plantGridEl.appendChild(card);
   }
 
-  /* ====== 結果カード（Instagram保存用） ====== */
+  /* ====== 結果カード（Instagram保存用）======
+     タイプの説明 + あなたにおすすめな植物ラベル追加
+  ====== */
   var cardWrap = document.createElement("div");
   cardWrap.className = "result-card-wrap";
   cardWrap.innerHTML =
@@ -282,9 +289,18 @@ function renderResult(res) {
       '<div class="rc-deco">🌿</div>' +
       '<div class="rc-type">' + res.main.icon + ' ' + res.main.name + '</div>' +
       '<div class="rc-sub">副タイプ：' + res.sub.name + '</div>' +
+      '<div class="rc-summary">' + res.main.summary + '</div>' +
+      '<div class="rc-plants-label">🌱 あなたにおすすめな植物</div>' +
       '<div class="rc-plants">' + res.plants.map(function(p){ return p.icon + ' ' + p.name; }).join('　') + '</div>' +
       '<div class="rc-url">yohaku-plants.github.io/yohakunohitohachi-app</div>' +
     '</div>';
+
+  /* rc-summary と rc-plants-label のスタイルを動的に追加 */
+  var rcStyle = document.createElement("style");
+  rcStyle.textContent =
+    ".rc-summary { font-size:11px; color:#555; line-height:1.6; margin-bottom:14px; text-align:left; padding:10px 12px; background:rgba(255,255,255,.5); border-radius:8px; }" +
+    ".rc-plants-label { font-size:11px; font-weight:700; color:#5a7a5a; margin-bottom:6px; }";
+  document.head.appendChild(rcStyle);
 
   /* ====== シェアボックス ====== */
   var xText = "私は【" + res.main.name + "】でした🌿\n"
@@ -300,7 +316,7 @@ function renderResult(res) {
   shareBox.className = "share-box";
   shareBox.innerHTML = '<div class="share-title">🌿 診断結果をシェアする</div>'
     + '<div class="share-btns" id="shareBtns"></div>'
-    + '<div class="share-note">Instagramは画像を保存後、ストーリーに貼り付けてください🌱</div>';
+    + '<div class="share-note">Instagramはカードをスクショしてストーリーに貼り付けてください🌱</div>';
 
   resultSection.appendChild(cardWrap);
   resultSection.appendChild(shareBox);
@@ -309,19 +325,29 @@ function renderResult(res) {
 
   var shareBtns = document.getElementById("shareBtns");
 
+  /* スマホ判定 */
+  var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
   /* Xボタン */
   var btnX = document.createElement("button");
   btnX.className = "share-btn share-btn-x";
-  btnX.textContent = "𝕏  でシェアする";
+  btnX.textContent = "𝕏  Xでシェアする";
   btnX.addEventListener("click", function () {
     window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText), "_blank");
   });
 
-  /* Instagramボタン（html2canvasで画像保存） */
+  /* Instagramボタン */
   var btnInsta = document.createElement("button");
   btnInsta.className = "share-btn share-btn-insta";
   btnInsta.textContent = "📸  Instagram用に画像を保存";
   btnInsta.addEventListener("click", function () {
+    if (isMobile) {
+      /* スマホはスクショ案内 */
+      btnInsta.textContent = "⬆️ 上のカードをスクショしてね！";
+      setTimeout(function () { btnInsta.textContent = "📸  Instagram用に画像を保存"; }, 4000);
+      return;
+    }
+    /* PCはhtml2canvasで保存 */
     var cardEl = document.getElementById("resultCard");
     if (!cardEl) return;
     if (typeof html2canvas === "undefined") {
