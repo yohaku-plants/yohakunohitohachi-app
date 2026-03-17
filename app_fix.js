@@ -97,6 +97,87 @@ document.getElementById("btnBack").addEventListener("click",  function () { scro
 
 btnReset.addEventListener("click", function () {
   answers = new Array(QUESTIONS.length).fill(null);
+  /* ====== シェアエリアを生成 ====== */
+
+  // 植物名をまとめる
+  var plantNames = res.plants.map(function(p){ return p.icon + " " + p.name; }).join("\n");
+
+  // Xシェア文
+  var xText = "私は【" + res.main.name + "】でした🌿\n"
+    + "おすすめ植物：\n" + plantNames + "\n"
+    + "あなたのタイプは？👇\n"
+    + "https://yohaku-plants.github.io/yohakunohitohachi-app/";
+
+  // Instagram用コピーテキスト
+  var instaText = "🌿 余白の一鉢 診断結果\n\n"
+    + "私のタイプ：" + res.main.name + "\n\n"
+    + "おすすめ植物：\n" + plantNames + "\n\n"
+    + "あなたも診断してみて👇\n"
+    + "https://yohaku-plants.github.io/yohakunohitohachi-app/";
+
+  // 結果カード（Instagram保存用）
+  var cardDiv = document.createElement("div");
+  cardDiv.className = "result-card-wrap";
+  cardDiv.innerHTML = '<div id="resultCard">'
+    + '<div class="rc-site">余白の一鉢｜観葉植物診断</div>'
+    + '<div class="rc-deco">🌿</div>'
+    + '<div class="rc-type">' + res.main.icon + ' ' + res.main.name + '</div>'
+    + '<div class="rc-sub">副タイプ：' + res.sub.name + '</div>'
+    + '<div class="rc-plants">' + res.plants.map(function(p){ return p.icon + ' ' + p.name; }).join('　') + '</div>'
+    + '<div class="rc-url">yohaku-plants.github.io/yohakunohitohachi-app</div>'
+    + '</div>';
+
+  // シェアボックス
+  var shareBox = document.createElement("div");
+  shareBox.className = "share-box";
+  shareBox.innerHTML = '<div class="share-title">🌿 診断結果をシェアする</div>';
+
+  var shareBtns = document.createElement("div");
+  shareBtns.className = "share-btns";
+
+  // Xボタン
+  var btnX = document.createElement("button");
+  btnX.className = "share-btn share-btn-x";
+  btnX.innerHTML = "𝕏 Xでシェアする";
+  btnX.addEventListener("click", function(){
+    window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText), "_blank");
+  });
+
+  // Instagramボタン
+  var btnInsta = document.createElement("button");
+  btnInsta.className = "share-btn share-btn-insta";
+  btnInsta.innerHTML = "📸 Instagramストーリー用にコピー";
+  btnInsta.addEventListener("click", function(){
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(instaText).then(function(){
+        btnInsta.innerHTML = "✅ コピーしました！Instagramに貼ってね";
+        setTimeout(function(){ btnInsta.innerHTML = "📸 Instagramストーリー用にコピー"; }, 3000);
+      });
+    } else {
+      // フォールバック
+      var ta = document.createElement("textarea");
+      ta.value = instaText;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      btnInsta.innerHTML = "✅ コピーしました！Instagramに貼ってね";
+      setTimeout(function(){ btnInsta.innerHTML = "📸 Instagramストーリー用にコピー"; }, 3000);
+    }
+  });
+
+  var shareNote = document.createElement("div");
+  shareNote.className = "share-note";
+  shareNote.textContent = "Instagramはコピー後、アプリを開いてストーリーのテキストに貼り付けてください🌱";
+
+  shareBtns.appendChild(btnX);
+  shareBtns.appendChild(btnInsta);
+  shareBox.appendChild(shareBtns);
+  shareBox.appendChild(shareNote);
+
+  // 結果セクションに追加
+  resultSection.insertBefore(cardDiv, document.getElementById("plantGrid"));
+  resultSection.appendChild(shareBox);
   resultSection.hidden = true;
   renderQuiz();
   scrollToId("diagnosis");
