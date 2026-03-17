@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>お問い合わせ｜余白の一鉢</title>
+  <link rel="stylesheet" href="./style.css?v=10" />
+</head>
+<body id="top">
+
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="brand" href="./index.html">
+        <span class="brand-mark"></span>
+        <span class="brand-text">
+          <span class="brand-sub">余白の一鉢</span>
+          <span class="brand-main">観葉植物診断</span>
+        </span>
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card" style="margin-top:20px">
+      <h1 style="font-size:20px;font-weight:700;margin-bottom:8px">お問い合わせ</h1>
+      <p class="text-muted" style="font-size:13px;margin-bottom:20px">
+        ご意見・ご要望・不具合のご報告などはこちらからお気軽にどうぞ🌿
+      </p>
+
+      <!-- Google フォームを使う場合はここに埋め込みコードを貼る -->
+      <!-- <iframe src="https://docs.google.com/forms/d/e/XXXXXXXXXX/viewform?embedded=true" width="100%" height="600" frameborder="0" marginheight="0" marginwidth="0">読み込んでいます…</iframe> -->
+
+      <div class="contact-box">
+        <div class="contact-item">
+          <div class="contact-label">📧 メールでのお問い合わせ</div>
+          <div class="contact-value">
+            <!-- メールアドレスをここに入力 -->
+            <a href="mailto:yohaku.plants@gmail.com">yohaku.plants@gmail.com</a>
+          </div>
+        </div>
+        <div class="contact-note">
+          通常2〜3営業日以内にご返信いたします。<br>
+          内容によってはお返事が遅れる場合があります。
+        </div>
+      </div>
+
+      <div class="contact-guide">
+        <div class="contact-guide-title">📝 よくあるお問い合わせ</div>
+        <ul>
+          <li>診断結果についてのご質問</li>
+          <li>植物の育て方についてのご相談</li>
+          <li>サイトの不具合・表示崩れのご報告</li>
+          <li>掲載内容の誤りのご指摘</li>
+          <li>その他ご意見・ご感想</li>
+        </ul>
+      </div>
+
+      <div class="actionsRow" style="margin-top:24px">
+        <a href="./index.html" class="btn ghost">← トップに戻る</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>🌿 余白の一鉢</span>
+      <div class="footer-links">
+        <a href="./privacy.html">プライバシーポリシー</a>
+        <a href="./contact.html">お問い合わせ</a>
+      </div>
+    </footer>
+  </main>
+
+</body>
+</html>
