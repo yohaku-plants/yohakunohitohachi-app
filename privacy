@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>プライバシーポリシー｜余白の一鉢</title>
+  <link rel="stylesheet" href="./style.css?v=10" />
+</head>
+<body id="top">
+
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="brand" href="./index.html">
+        <span class="brand-mark"></span>
+        <span class="brand-text">
+          <span class="brand-sub">余白の一鉢</span>
+          <span class="brand-main">観葉植物診断</span>
+        </span>
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="card" style="margin-top:20px">
+      <h1 style="font-size:20px;font-weight:700;margin-bottom:20px">プライバシーポリシー</h1>
+
+      <div class="policy-body">
+
+        <h2>1. 個人情報の取り扱いについて</h2>
+        <p>当サイト「余白の一鉢」（以下、当サイト）は、ユーザーの個人情報の保護に努めます。当サイトの診断機能は、氏名・メールアドレス等の個人を特定できる情報を収集しておりません。</p>
+
+        <h2>2. アクセス解析ツールについて</h2>
+        <p>当サイトでは、Googleによるアクセス解析ツール「Googleアナリティクス」を使用する場合があります。このGoogleアナリティクスはデータの収集のためにCookieを使用しています。このデータは匿名で収集されており、個人を特定するものではありません。</p>
+        <p>Googleアナリティクスのデータ収集を拒否する場合は、Googleアナリティクスオプトアウトアドオンをご利用ください。</p>
+
+        <h2>3. 広告について</h2>
+        <p>当サイトでは、第三者配信の広告サービス（Googleアドセンス）を利用する場合があります。このような広告配信事業者は、ユーザーの興味に応じた商品やサービスの広告を表示するため、Cookieを使用することがあります。</p>
+        <p>Googleによる広告のCookie利用については、<a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Googleのポリシーと規約</a>をご確認ください。</p>
+
+        <h2>4. 免責事項</h2>
+        <p>当サイトのコンテンツ・情報につきまして、可能な限り正確な情報を掲載するよう努めておりますが、誤情報が入り込んだり、情報が古くなったりすることもございます。当サイトに掲載された内容によって生じた損害等の一切の責任を負いかねますのでご了承ください。</p>
+        <p>当サイトの診断結果は医療・治療を目的としたものではありません。健康上の問題がある場合は、医療機関にご相談ください。</p>
+
+        <h2>5. リンクについて</h2>
+        <p>当サイトからのリンクやバナー等で移動したサイトで提供される情報、サービス等について一切の責任を負いません。</p>
+
+        <h2>6. プライバシーポリシーの変更について</h2>
+        <p>当サイトは、個人情報に関して適用される日本の法令を遵守するとともに、本プライバシーポリシーの内容を適宜見直しその改善に努めます。修正された最新のプライバシーポリシーは常に本ページにて開示されます。</p>
+
+        <p class="policy-date">制定日：2026年3月</p>
+
+      </div>
+
+      <div class="actionsRow" style="margin-top:24px">
+        <a href="./index.html" class="btn ghost">← トップに戻る</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>🌿 余白の一鉢</span>
+      <div class="footer-links">
+        <a href="./privacy.html">プライバシーポリシー</a>
+        <a href="./contact.html">お問い合わせ</a>
+      </div>
+    </footer>
+  </main>
+
+</body>
+</html>
