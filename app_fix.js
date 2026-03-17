@@ -312,7 +312,7 @@ function renderResult(res) {
   /* Xボタン */
   var btnX = document.createElement("button");
   btnX.className = "share-btn share-btn-x";
-  btnX.textContent = "𝕏  Xでシェアする";
+  btnX.textContent = "𝕏  でシェアする";
   btnX.addEventListener("click", function () {
     window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText), "_blank");
   });
