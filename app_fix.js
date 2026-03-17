@@ -1,4 +1,4 @@
-/* ====== 余白の一鉢 | app_fix.js v9 ====== */
+/* ====== 余白の一鉢 | app_fix.js v10 ====== */
 
 var SITE_URL = "https://yohaku-plants.github.io/yohakunohitohachi-app/";
 
@@ -48,7 +48,7 @@ var PLANTS = {
   dracaena:   { name:"ドラセナ",           icon:"🌾", hana:"幸福",         place:"明るい室内〜半日陰",         ws:"10日に1回（乾いてから）",        ww:"2〜3週間に1回（控えめ）",      ng:"寒さ・過湿",           why:"部屋にどんと構えてくれる、頼もしい存在感の植物です。",                                                         img:"plants5.jpeg"  },
   gajumaru:   { name:"ガジュマル",         icon:"🌳", hana:"健康",         place:"明るい室内（直射は避ける）", ws:"7〜10日に1回（乾いたら）",       ww:"2〜3週間に1回（控えめ）",      ng:"冷え・乾燥しすぎ",     why:"ぽてっとした幹がチャーミングで、見るだけで気持ちがほぐれます。",                                               img:"plants6.jpeg"  },
   monstera:   { name:"モンステラ",         icon:"🌿", hana:"うれしい便り", place:"明るい室内（直射NG）",       ws:"7〜10日に1回（表面が乾いたら）", ww:"10〜14日に1回（控えめ）",      ng:"冷え・直射",           why:"大きくて個性的な葉っぱが、視界に余白をつくってくれます。",                                                     img:"plants7.jpeg"  },
-  schefflera: { name:"シェフレラ",         icon:"🍀", hana:"実直",         place:"明るい室内",                 ws:"7〜10日に1回（乾いたら）",       ww:"10〜14日に1回（控えめ）",      ng:"寒さ・過湿",           why:"丈夫で手がかからず、完璧にしなくていい、を思い出させてくれる植物です。",                                       img:"plants8.jpeg"  },
+  schefflera: { name:"シェフレラ",         icon:"🍀", hana:"実直",         place:"明るい室内",                 ws:"7〜10日に1回（乾いたら）",       ww:"10〜14日に1回（控えめ）",      ng:"寒さ・過湿",           why:"丈夫で手がかからず、完璧にしなくていいを思い出させてくれる植物です。",                                         img:"plants8.jpeg"  },
   umbellata:  { name:"ウンベラータ",       icon:"🌱", hana:"すこやか",     place:"明るい室内（直射NG）",       ws:"7〜10日に1回（乾いたら）",       ww:"10〜14日に1回（控えめ）",      ng:"冷え・急な移動",       why:"ハート形の大きな葉が、見ているだけで深呼吸させてくれます。",                                                   img:"plants9.jpeg"  },
   everfresh:  { name:"エバーフレッシュ",   icon:"✨", hana:"歓喜",         place:"明るい室内（直射NG）",       ws:"5〜7日に1回（やや湿り気）",      ww:"10〜14日に1回（控えめ）",      ng:"乾燥しすぎ・冷え",     why:"夜になると葉を閉じる動きが、1日の終わりのサインになってくれます。",                                             img:"plants10.jpeg" },
   ivy:        { name:"アイビー",           icon:"🌿", hana:"友情",         place:"明るい室内〜半日陰",         ws:"5〜10日に1回（乾いたら）",       ww:"10〜14日に1回（控えめ）",      ng:"水切れ放置・直射",     why:"つるを伸ばしながら育つ姿が可愛く、ちょっとしたお世話が満足感につながります。",                                 img:"plants11.jpeg" },
@@ -317,7 +317,7 @@ function renderResult(res) {
     window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText), "_blank");
   });
 
-  /* Instagramボタン */
+  /* Instagramボタン（html2canvasで画像保存） */
   var btnInsta = document.createElement("button");
   btnInsta.className = "share-btn share-btn-insta";
   btnInsta.textContent = "📸  Instagram用に画像を保存";
