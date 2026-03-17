@@ -86,7 +86,7 @@ var aboutBox      = document.getElementById("aboutBox");
 
 /* ====== ボタンを横並びにするCSS追加 ====== */
 var heroStyle = document.createElement("style");
-heroStyle.textContent = ".hero-actions { flex-wrap: nowrap; } .hero-actions .btn { flex: 1; text-align: center; }";
+heroStyle.textContent = ".hero-actions { flex-wrap: nowrap; } .hero-actions .btn { flex: 1; text-align: center; white-space: nowrap; font-size: 13px; padding: 12px 10px; }";
 document.head.appendChild(heroStyle);
 
 function scrollToId(id) {
