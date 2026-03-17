@@ -1,4 +1,6 @@
-/* ====== 余白の一鉢 | app_fix.js v8 ====== */
+/* ====== 余白の一鉢 | app_fix.js v9 ====== */
+
+var SITE_URL = "https://yohaku-plants.github.io/yohakunohitohachi-app/";
 
 function imgUrl(fileName) {
   return "./" + fileName;
@@ -97,87 +99,6 @@ document.getElementById("btnBack").addEventListener("click",  function () { scro
 
 btnReset.addEventListener("click", function () {
   answers = new Array(QUESTIONS.length).fill(null);
-  /* ====== シェアエリアを生成 ====== */
-
-  // 植物名をまとめる
-  var plantNames = res.plants.map(function(p){ return p.icon + " " + p.name; }).join("\n");
-
-  // Xシェア文
-  var xText = "私は【" + res.main.name + "】でした🌿\n"
-    + "おすすめ植物：\n" + plantNames + "\n"
-    + "あなたのタイプは？👇\n"
-    + "https://yohaku-plants.github.io/yohakunohitohachi-app/";
-
-  // Instagram用コピーテキスト
-  var instaText = "🌿 余白の一鉢 診断結果\n\n"
-    + "私のタイプ：" + res.main.name + "\n\n"
-    + "おすすめ植物：\n" + plantNames + "\n\n"
-    + "あなたも診断してみて👇\n"
-    + "https://yohaku-plants.github.io/yohakunohitohachi-app/";
-
-  // 結果カード（Instagram保存用）
-  var cardDiv = document.createElement("div");
-  cardDiv.className = "result-card-wrap";
-  cardDiv.innerHTML = '<div id="resultCard">'
-    + '<div class="rc-site">余白の一鉢｜観葉植物診断</div>'
-    + '<div class="rc-deco">🌿</div>'
-    + '<div class="rc-type">' + res.main.icon + ' ' + res.main.name + '</div>'
-    + '<div class="rc-sub">副タイプ：' + res.sub.name + '</div>'
-    + '<div class="rc-plants">' + res.plants.map(function(p){ return p.icon + ' ' + p.name; }).join('　') + '</div>'
-    + '<div class="rc-url">yohaku-plants.github.io/yohakunohitohachi-app</div>'
-    + '</div>';
-
-  // シェアボックス
-  var shareBox = document.createElement("div");
-  shareBox.className = "share-box";
-  shareBox.innerHTML = '<div class="share-title">🌿 診断結果をシェアする</div>';
-
-  var shareBtns = document.createElement("div");
-  shareBtns.className = "share-btns";
-
-  // Xボタン
-  var btnX = document.createElement("button");
-  btnX.className = "share-btn share-btn-x";
-  btnX.innerHTML = "𝕏 Xでシェアする";
-  btnX.addEventListener("click", function(){
-    window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText), "_blank");
-  });
-
-  // Instagramボタン
-  var btnInsta = document.createElement("button");
-  btnInsta.className = "share-btn share-btn-insta";
-  btnInsta.innerHTML = "📸 Instagramストーリー用にコピー";
-  btnInsta.addEventListener("click", function(){
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(instaText).then(function(){
-        btnInsta.innerHTML = "✅ コピーしました！Instagramに貼ってね";
-        setTimeout(function(){ btnInsta.innerHTML = "📸 Instagramストーリー用にコピー"; }, 3000);
-      });
-    } else {
-      // フォールバック
-      var ta = document.createElement("textarea");
-      ta.value = instaText;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      btnInsta.innerHTML = "✅ コピーしました！Instagramに貼ってね";
-      setTimeout(function(){ btnInsta.innerHTML = "📸 Instagramストーリー用にコピー"; }, 3000);
-    }
-  });
-
-  var shareNote = document.createElement("div");
-  shareNote.className = "share-note";
-  shareNote.textContent = "Instagramはコピー後、アプリを開いてストーリーのテキストに貼り付けてください🌱";
-
-  shareBtns.appendChild(btnX);
-  shareBtns.appendChild(btnInsta);
-  shareBox.appendChild(shareBtns);
-  shareBox.appendChild(shareNote);
-
-  // 結果セクションに追加
-  resultSection.insertBefore(cardDiv, document.getElementById("plantGrid"));
-  resultSection.appendChild(shareBox);
   resultSection.hidden = true;
   renderQuiz();
   scrollToId("diagnosis");
@@ -313,7 +234,6 @@ function renderResult(res) {
 
   for (var i = 0; i < res.plants.length; i++) {
     var p = res.plants[i];
-
     var card = document.createElement("div");
     card.className = "plant";
 
@@ -337,7 +257,6 @@ function renderResult(res) {
 
     var info = document.createElement("div");
     info.className = "plant-info";
-
     var kv = document.createElement("div");
     kv.className = "kv";
     kv.innerHTML =
@@ -345,19 +264,106 @@ function renderResult(res) {
       "<div class='k'>💧 春夏</div><div class='v'>" + p.ws + "</div>" +
       "<div class='k'>❄️ 冬</div><div class='v'>" + p.ww + "</div>" +
       "<div class='k'>⚠️ 注意</div><div class='v'>" + p.ng + "</div>";
-
     var why = document.createElement("div");
     why.className = "why";
     why.textContent = "🍃 " + p.why;
-
     info.appendChild(kv);
     info.appendChild(why);
     card.appendChild(info);
     plantGridEl.appendChild(card);
   }
 
+  /* ====== 結果カード（Instagram保存用） ====== */
+  var cardWrap = document.createElement("div");
+  cardWrap.className = "result-card-wrap";
+  cardWrap.innerHTML =
+    '<div id="resultCard">' +
+      '<div class="rc-site">🌿 余白の一鉢｜観葉植物診断</div>' +
+      '<div class="rc-deco">🌿</div>' +
+      '<div class="rc-type">' + res.main.icon + ' ' + res.main.name + '</div>' +
+      '<div class="rc-sub">副タイプ：' + res.sub.name + '</div>' +
+      '<div class="rc-plants">' + res.plants.map(function(p){ return p.icon + ' ' + p.name; }).join('　') + '</div>' +
+      '<div class="rc-url">yohaku-plants.github.io/yohakunohitohachi-app</div>' +
+    '</div>';
+
+  /* ====== シェアボックス ====== */
+  var xText = "私は【" + res.main.name + "】でした🌿\n"
+    + "おすすめ植物：" + res.plants.map(function(p){ return p.name; }).join("・") + "\n"
+    + "あなたのタイプは？👇\n" + SITE_URL;
+
+  var lineText = "🌿 余白の一鉢 診断結果\n"
+    + "私のタイプ：" + res.main.name + "\n"
+    + "おすすめ植物：" + res.plants.map(function(p){ return p.name; }).join("・") + "\n"
+    + "あなたも診断してみて👇\n" + SITE_URL;
+
+  var shareBox = document.createElement("div");
+  shareBox.className = "share-box";
+  shareBox.innerHTML = '<div class="share-title">🌿 診断結果をシェアする</div>'
+    + '<div class="share-btns" id="shareBtns"></div>'
+    + '<div class="share-note">Instagramは画像を保存後、ストーリーに貼り付けてください🌱</div>';
+
+  resultSection.appendChild(cardWrap);
+  resultSection.appendChild(shareBox);
   resultSection.hidden = false;
   resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  var shareBtns = document.getElementById("shareBtns");
+
+  /* Xボタン */
+  var btnX = document.createElement("button");
+  btnX.className = "share-btn share-btn-x";
+  btnX.textContent = "𝕏  Xでシェアする";
+  btnX.addEventListener("click", function () {
+    window.open("https://twitter.com/intent/tweet?text=" + encodeURIComponent(xText), "_blank");
+  });
+
+  /* Instagramボタン */
+  var btnInsta = document.createElement("button");
+  btnInsta.className = "share-btn share-btn-insta";
+  btnInsta.textContent = "📸  Instagram用に画像を保存";
+  btnInsta.addEventListener("click", function () {
+    var cardEl = document.getElementById("resultCard");
+    if (!cardEl) return;
+    if (typeof html2canvas === "undefined") {
+      alert("しばらく待ってから再度お試しください。");
+      return;
+    }
+    btnInsta.textContent = "⏳ 画像を生成中...";
+    btnInsta.disabled = true;
+    html2canvas(cardEl, { scale: 2, useCORS: true }).then(function (canvas) {
+      var link = document.createElement("a");
+      link.download = "yohaku-plants-result.png";
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+      btnInsta.textContent = "✅ 保存できました！ストーリーに貼ってね";
+      btnInsta.disabled = false;
+      setTimeout(function () { btnInsta.textContent = "📸  Instagram用に画像を保存"; }, 4000);
+    }).catch(function () {
+      btnInsta.textContent = "📸  Instagram用に画像を保存";
+      btnInsta.disabled = false;
+    });
+  });
+
+  /* LINEボタン */
+  var btnLine = document.createElement("button");
+  btnLine.className = "share-btn share-btn-line";
+  btnLine.textContent = "💬  LINEでシェアする";
+  btnLine.addEventListener("click", function () {
+    window.open("https://social-plugins.line.me/lineit/share?url=" + encodeURIComponent(SITE_URL) + "&text=" + encodeURIComponent(lineText), "_blank");
+  });
+
+  /* Facebookボタン */
+  var btnFb = document.createElement("button");
+  btnFb.className = "share-btn share-btn-fb";
+  btnFb.textContent = "📘  Facebookでシェアする";
+  btnFb.addEventListener("click", function () {
+    window.open("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(SITE_URL), "_blank");
+  });
+
+  shareBtns.appendChild(btnX);
+  shareBtns.appendChild(btnInsta);
+  shareBtns.appendChild(btnLine);
+  shareBtns.appendChild(btnFb);
 }
 
 renderQuiz();
